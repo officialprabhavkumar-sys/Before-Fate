@@ -231,7 +231,7 @@ class GameActions():
         game_map = self.world_state.maps[sublocation[0].strip()]
         sub_location : SubLocation = game_map.locations[sublocation[1].strip()].sub_locations[sublocation[2].strip()]
         sub_location.add_entity(entity)
-    
+        
     def spawn_entities_at_sublocation(self, entity_type : str, entity_template_name : str, amount : int, sublocation : str) -> None:
         verifier.verify_non_negative(amount, "amount")
         for _ in range(amount):
@@ -343,10 +343,11 @@ class GameActions():
         else:
             output_box = self.ui_engine.game_output
         scrollbar = output_box.verticalScrollBar()
-        at_bottom = scrollbar.value() == scrollbar.maximum()
+        at_bottom = (scrollbar.maximum() - scrollbar.value()) <= 5
         output_box.append(text)
         if at_bottom:
-            QTimer.singleShot(0, output_box.ensureCursorVisible)
+            time.sleep(0.001) #PySide6 needs a moment to update
+            self.ui_engine.scroll_to_bottom_signal.emit(self.game_engine.state)
 
     def player_used_command(self, command_used : str) -> bool:
         if not self.game_engine.last_command:
