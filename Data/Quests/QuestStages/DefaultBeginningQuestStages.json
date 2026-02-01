@@ -1,5 +1,104 @@
 {
-    "__default_beginning_quest_interview_1" : 
+    "__default_beginning_quest_interview_1__" : 
+    {
+        "description" : "",
+        "on_entry" : [],
+        "success_conditions" : 
+        [
+            "@player_location_is{|location| = |India/New Delhi/FateCreations|}"
+        ],
+        "success_result" : 
+        [
+            {
+                "type" : "conditional",
+                "args" : 
+                {
+                    "condition" : "@get_current_time{} > *20840010830",
+                    "then" : 
+                    [
+                        {
+                            "type" : "output_with_pauses",
+                            "args" : 
+                            {
+                                "output" : 
+                                [
+                                    {"text" : "You arrive at FateCreations, but unfortunately, you are late for your interview.", "tag" : "narrator"},
+                                    {"text" : "The receptionist informs you that the interview has already concluded and you have missed your chance.", "tag" : "narrator"},
+                                    {"text" : "There's nothing more you can do here.", "tag" : "narrator"}
+                                ],
+                                "pause" : 25,
+                                "tick_based" : true
+                            }
+                        },
+                        {
+                            "type" : "set_quest_stage",
+                            "args" : 
+                            {
+                                "quest_id" : "__default_beginning_interview_quest__",
+                                "stage_id" : "__default_beginning_quest_interview_2__"
+                            }
+                        }
+                    ],
+                    "other_wise" : 
+                    [
+                        {
+                            "type" : "output_with_pauses",
+                            "args" : 
+                            {
+                                "output" : 
+                                [
+                                    {"text" : "You arrive at FateCreations just in time for your interview.", "tag" : "narrator"},
+                                    {"text" : "Wait wh-^(%!@", "tag" : "narrator"},
+                                    {"text" : "The receptionist greets you warmly and guides you to the interview room.", "tag" : "info"},
+                                    {"text" : "You take a deep breath and prepare yourself for the questions ahead.", "tag" : "info"},
+                                    {"text" : "The interview goes well, and you leave the building feeling hopeful about your chances.", "tag" : "info"},
+                                    {"text" : "A few days later, you receive a call informing you that you have been selected for the position at FateCreations.", "tag" : "info"},
+                                    {"text" : "You live out your life and die a peaceful death.", "tag" : "info"},
+                                    {"text" : "Congratulations! You have completed the game.", "tag" : "success"},
+                                    {"text" : "...", "tag" : "narrator"},
+                                    {"text" : "...", "tag" : "narrator"},
+                                    {"text" : "!@$%#-Oh leave me alone you pesky system. I will deal with you very soo-, arghm.", "tag" : "narrator"},
+                                    {"text" : "Excuse me, that was not supposed to happen. I only have a little power left but I suppose it should be enough.", "tag" : "narrator"},
+                                    {"text" : "The world around you shifts very slightly. You blink and you find yourself outside of the building again.", "tag" : "narrator"},
+                                    {"text" : "What is happening to you today? Are you hallucinating? You think to yourself.", "tag" : "narrator"},
+                                    {"text" : "Anyhow, you should head into the building for your interview. You think to yourself and head inside.", "tag" : "narrator"},
+                                    {"text" : "You walk into the building, but unfortunately, you are late for your interview.", "tag" : "narrator"},
+                                    {"text" : "The receptionist informs you that the interview has already concluded and you have missed your chance.", "tag" : "narrator"},
+                                    {"text" : "There's nothing more you can do here.", "tag" : "narrator"}
+                                ],
+                                "pause" : 25,
+                                "tick_based" : true
+                            }
+                        },
+                        {
+                            "type" : "set_quest_stage",
+                            "args" : 
+                            {
+                                "quest_id" : "__default_beginning_interview_quest__",
+                                "stage_id" : "__default_beginning_quest_interview_2__"
+                            }
+                        },
+                        {
+                            "type" : "schedule_result_by_engine_tick",
+                            "args" : 
+                            {
+                                "tick_offset" : 300,
+                                "result" : 
+                                {
+                                    "type" : "move_time_forward_by_ticks",
+                                    "args" : 
+                                    {
+                                        "ticks" : 30
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "__default_beginning_quest_interview_2__" : 
     {
         "description" : "",
         "on_entry" : [],

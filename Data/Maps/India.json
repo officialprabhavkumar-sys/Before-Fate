@@ -49,11 +49,85 @@
                                 "pause" : 25, 
                                 "tick_based" : true
                             }
+                        },
+                        {
+                            "type" : "start_quest",
+                            "args" : 
+                            {
+                                "quest_id" : "__default_beginning_interview_quest__"
+                            }
                         }
                     ],
                     "exits" : 
                     {
-                        
+                        "New Delhi Street" : "India/New Delhi/Street"
+                    }
+                },
+
+                "Street" :
+                {
+                    "description" : "You are standing on a busy street in New Delhi. The sounds of honking cars and chattering people fill the air.",
+                    "tags" : [],
+                    "inventory" : 
+                    {
+                        "tables" : {
+                            "static" : [],
+                            "dynamic" : []
+                        },
+                        "spawn" : 
+                        {
+                            "instanced" : [],
+                            "stacked" : []
+                        },
+                        "load" : 
+                        {
+                            "instanced" : [],
+                            "stacked" : []
+                        }
+                    },
+                    "entities" :
+                    {
+                        "spawn" : {},
+                        "load" : []
+                    },
+                    "location_events" : [],
+                    "exits" : 
+                    {
+                        "Home" : "India/New Delhi/Home",
+                        "FateCreations" : "India/New Delhi/FateCreations"
+                    }
+                },
+
+                "FateCreations" :
+                {
+                    "description" : "You are outside the FateCreations building, one of the biggest companies in India. The modern architecture stands tall against the skyline.",
+                    "tags" : [],
+                    "inventory" : 
+                    {
+                        "tables" : {
+                            "static" : [],
+                            "dynamic" : []
+                        },
+                        "spawn" : 
+                        {
+                            "instanced" : [],
+                            "stacked" : []
+                        },
+                        "load" : 
+                        {
+                            "instanced" : [],
+                            "stacked" : []
+                        }
+                    },
+                    "entities" :
+                    {
+                        "spawn" : {},
+                        "load" : []
+                    },
+                    "location_events" : [],
+                    "exits" : 
+                    {
+                        "Street" : "India/New Delhi/Street"
                     }
                 }
             }

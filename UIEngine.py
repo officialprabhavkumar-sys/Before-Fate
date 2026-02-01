@@ -188,7 +188,7 @@ class UIEngine(QObject):
     def _scroll_to_bottom(self, box_name : str) -> None:
         if box_name == "mainmenu":
             scrollbar = self.mainmenu_output.verticalScrollBar()
-        elif box_name == "game":
+        elif box_name in {"game", "interaction", "trade", "combat"}:
             scrollbar = self.game_output.verticalScrollBar()
         QTimer.singleShot(0, lambda: scrollbar.setValue(scrollbar.maximum()))
     

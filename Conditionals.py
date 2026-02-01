@@ -32,12 +32,15 @@ class Interpreter():
         return func(**args)
     
     def interpret_as_int(self, value : str) -> int:
+        value = value.strip().removeprefix("*")
         return int(value)
     
     def interpret_as_float(self, value : str) -> float:
+        value = value.strip().removeprefix("**")
         return float(value)
     
     def interpret_as_bool(self, value : str) -> bool:
+        value = value.strip().removeprefix("~")
         if value.lower() == "true":
             return True
         elif value.lower() == "false":
@@ -55,24 +58,26 @@ class Interpreter():
     def prepare_for_function_call(self, syntax : str) -> dict:
         #reference : @player_item_count{|item_type|=|Item|, |item_name|=|Spirit Stone|}
         syntax = syntax.strip()
+        syntax = syntax.removeprefix(self.FUNC_CALLER)
         prepared_args = {}
         syntax = syntax.split(self.ARGS_PASSER["start"])
         #|item_type|=|Item|, |item_name|=|Spirit Stone|}
-        syntax = syntax.removesuffix(self.ARGS_PASSER["end"])
+        syntax.append(syntax.pop().removesuffix(self.ARGS_PASSER["end"]))
         #|item_type|=|Item|, |item_name|=|Spirit Stone|
         prepared_args["function_name"] = syntax[0]
         function_args = {} # {"function_name" : function_name, args : {key : value, ...}}
-        for function_arg in syntax[1].split(","):
-            #|item_type|=|Item|
-            function_arg = function_arg.strip().split("=")
-            function_key = function_arg[0].strip().replace("|", "'")
-            function_value = function_arg[1].strip().replace("|", "'")
-            type_prefixes = list(self.TYPE_PREFIXES.keys())[::-1]
-            for type_prefix in type_prefixes:
-                if type_prefix in function_value:
-                    function_value = function_value.removeprefix(type_prefix)
-                    function_value = self.TYPE_PREFIXES[type_prefix](function_value)
-            function_args[function_key] = function_value
+        if syntax[1]:
+            for function_arg in syntax[1].split(","):
+                #|item_type|=|Item|
+                function_arg = function_arg.strip().split("=")
+                function_key = function_arg[0].strip().replace("|", "")
+                function_value = function_arg[1].strip().replace("|", "")
+                type_prefixes = list(self.TYPE_PREFIXES.keys())[::-1]
+                for type_prefix in type_prefixes:
+                    if type_prefix in function_value:
+                        function_value = function_value.removeprefix(type_prefix)
+                        function_value = self.TYPE_PREFIXES[type_prefix](function_value)
+                function_args[function_key] = function_value
         prepared_args["args"] = function_args
         return prepared_args
     
@@ -138,6 +143,7 @@ class QuestConditionPool():
     def pop_satisfied_results(self) -> list[list[dict]]:
         MAPPING = {"success" : "fail", "fail" : "success"}
         satisfied = []
+        to_remove = []
         for quest_conditional_tag in self.quest_conditionals.keys():
             quest_conditional : QuestConditional = self.quest_conditionals[quest_conditional_tag]
             for condition in quest_conditional.conditions:
@@ -147,11 +153,10 @@ class QuestConditionPool():
                 if len(quest_conditional.conditions) == 0:
                     continue
                 satisfied.append(quest_conditional.then)
-                self.remove_quest_conditional(f"{quest_conditional.quest_id}_{quest_conditional.tag}")
-                try:
-                    self.remove_quest_conditional(f"{quest_conditional.quest_id}_{MAPPING[quest_conditional.tag]}")
-                except KeyError:
-                    pass
+                to_remove.append(f"{quest_conditional.quest_id}_{quest_conditional.tag}")
+                to_remove.append(f"{quest_conditional.quest_id}_{MAPPING[quest_conditional.tag]}")
+        for quest_conditional_tag in to_remove:
+            self.remove_quest_conditional(quest_conditional_tag)
         return satisfied
     
     def remove_quest_conditional(self, quest_conditional_tag : str) -> None:

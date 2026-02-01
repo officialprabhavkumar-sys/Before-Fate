@@ -45,7 +45,8 @@ class GameActions():
             "quest_at_stage" : self.quest_at_stage,
             "quest_flag_is_true" : self.quest_flag_is_true,
             "quest_is_complete" : self.quest_is_complete,
-            "quest_is_failed" : self.quest_is_failed
+            "quest_is_failed" : self.quest_is_failed,
+            "get_current_time" : self.get_current_time_id
         }
         self.interpreter = Interpreter(available_functions_mapping = self.available_functions_mapping)
         self.result_functions_mapping = {
@@ -87,7 +88,8 @@ class GameActions():
             "schedule_result_by_engine_tick" : self.schedule_result_by_engine_tick,
             "schedule_results_by_engine_tick" : self.schedule_results_by_engine_tick,
             "add_exit_to_sublocation" : self.add_exit_to_sublocation,
-            "remove_exit_from_sublocation" : self.remove_exit_from_sublocation
+            "remove_exit_from_sublocation" : self.remove_exit_from_sublocation,
+            "move_time_forward_by_ticks" : self.move_time_forward_by_ticks
         }
         self.command_queue = CommandQueue()
     
@@ -100,6 +102,10 @@ class GameActions():
     def game_engine(self, game_engine : GameEngine):
         verifier.verify_type(game_engine, GameEngine, "game_engine")
         self._game_engine = game_engine
+    
+    def move_time_forward_by_ticks(self, ticks : int) -> None:
+        verifier.verify_non_negative(ticks, "ticks")
+        self.world_state.world_time.update_tick(tick = int(ticks))
     
     def quest_is_complete(self, quest_id : str) -> bool:
         if not quest_id in self.world_state.player.quest_manager.quest_states:
@@ -218,7 +224,10 @@ class GameActions():
     def process_command_queue(self) -> None:
         while not self.command_queue.empty():
             command = self.command_queue.get_if_present()
-            self.handle_result(command)
+            if isinstance(command, list):
+                self.handle_results(command)
+            else:
+                self.handle_result(command)
     
     def spawn_entity_with_id(self, entity_type : str, entity_template_name : str, entity_id : str, sublocation : str) -> None:
         entity = self.entity_loader.spawn_entity(entity_type = entity_type, entity_template_name = entity_template_name)
@@ -382,6 +391,10 @@ class GameActions():
             else:
                 self.handle_results(results = conditional.other_wise)
     
+    def get_current_time_id(self) -> int:
+        print(self.world_state.world_time.to_world_timestamp().get_time_id())
+        return self.world_state.world_time.to_world_timestamp().get_time_id()
+    
     def handle_unpacked_conditional_dict(self, condition : str, then : list[dict], other_wise : list[dict]) -> None:
         if self.interpreter.interpret(condition = condition):
             self.handle_results(results = then)
@@ -471,15 +484,17 @@ class GameActions():
         self.set_quest_flag(quest_id = quest_id, flag = "completed", value = False)
         self.world_state.quest_condition_pool.flush()
         self.world_state.player.quest_manager.add_all_quest_conditionals_to_pool(quest_loader = self.quest_loader, quest_condition_pool = self.world_state.quest_condition_pool)
-    
-    def set_quest_stage(self, quest_id : str, stage : str) -> None:
+        self.output(text = f"New Quest Started : {self.get_quest(quest_id).name}", tag = "quest")
+        
+    def set_quest_stage(self, quest_id : str, stage_id : str) -> None:
         quest = self.get_quest(quest_id)
-        verifier.verify_list_contains_items(list(quest.stages.keys()), stage, "quest_stage")
+        verifier.verify_list_contains_items(list(quest.stages.keys()), stage_id, "quest_stage")
         quest_state = self.world_state.player.quest_manager.quest_states[quest_id]
-        quest_state.stage = stage
+        quest_state.stage = stage_id
         self.world_state.quest_condition_pool.flush()
         self.world_state.player.quest_manager.add_all_quest_conditionals_to_pool(quest_loader = self.quest_loader, quest_condition_pool = self.world_state.quest_condition_pool)
-    
+        self.output(text = f"Quest Updated : {quest.name}", tag = "quest_update")
+        
     def remove_quest_conditional_from_pool(self, quest_id : str, tag : Literal["success"] | Literal["fail"]) -> None:
         self.world_state.quest_condition_pool.remove_quest_conditional(f"{quest_id}_{tag}")
     
@@ -489,9 +504,11 @@ class GameActions():
     
     def set_quest_complete(self, quest_id : str) -> None:
         self.set_quest_flag(quest_id = quest_id, flag = "completed", value = True)
+        self.output(text = f"Quest Completed : {self.get_quest(quest_id).name}", tag = "reward")
     
     def set_quest_failed(self, quest_id : str) -> None:
         self.set_quest_flag(quest_id = quest_id, flag = "failed", value = True)
+        self.output(text = f"Quest Failed : {self.get_quest(quest_id).name}", tag = "defeat")
     
     def set_time(self, time : str | WorldTimeStamp | dict) -> None:
         MAPPING = {"morning" : 6, "day" : 12, "evening" : 16, "night" : 22}
@@ -1172,7 +1189,9 @@ class GameActions():
             self.game_engine.current_location = sublocation_to_go_to
             self.game_engine.temp_entity_id_to_entity_mapping = None
             self.world_state.player.location = location_to_go_to_path
+            self.handle_look()
             return
+        
         elif first_arg == "equip":
             if player_input_length < 2:
                 self.output("equip what? Don't you think that needs to be followed up by an item id? If you are at this point you should know how this works, come on, I'm sure you can do it.", "narrator")
@@ -1290,7 +1309,7 @@ class GameActions():
         self.output("7) \"wait\" : Followed by the number of minutes you would like to wait.", "info")
         self.output("8) \"equip\" : Followed by the item id of the item you want to equip. Use \"inventory\" to see item ids.", "info")
         self.output("9) \"unequip\" : Followed by any of the following : (\"weapon\", \"helmet\", \"chestplate\", \"legging\", \"boot\") to unequip the item at in that particular slot.", "info")
-        self.output("10) \"quests\" : Followed by \"completed\", \"active\" or \"failed\" to view completed quests, active quests and failed quests respectively.")
+        self.output("10) \"quests\" : Followed by \"completed\", \"active\" or \"failed\" to view completed quests, active quests and failed quests respectively.", "info")
         self.output("11) \"use\" : Followed by the item id of the item you want to use. Use \"inventory\" to see item ids.", "info")
         
     def process_game_player_input(self) -> None:

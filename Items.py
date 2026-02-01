@@ -51,6 +51,7 @@ class Consumable(Item):
         self.effects : dict = verifier.verify_type(effects, dict, "effects", True) or []
         self.requirements : list[str] = []
 
+#Discontinued Ammo class for now.
 # class Ammo(Item):
 #     def __init__(self, name : str, id : str, weight : int | float = 0.01, base_damage : int = 0, armor_penetration : int | float = 0, ammo_class : str = "generic", description : str = "Ammo."):
 #         super().__init__(name = name, id = id, weight = weight, stackable = True, description = description)
