@@ -1,0 +1,19 @@
+{
+    "default_merchant_interaction" : {
+        "text" : "The merchant looks at you with an inviting gaze, Clearly happy to sell you his wares.",
+        "dialogues" : ["trade"],
+        "exitable" : true
+    },
+
+    "default_bandit_interaction" : {
+        "text" : "The bandit eyes you cautiously...",
+        "dialogues" : ["attack"],
+        "exitable" : true
+    },
+
+    "default_guard_interaction" : {
+        "text" : "The guard look you up and down with a scrutinizing gaze.",
+        "dialogues" : [],
+        "exitable" : true
+    }
+}

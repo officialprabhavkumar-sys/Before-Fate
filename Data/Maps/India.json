@@ -1,0 +1,62 @@
+{
+    "name" : "India",
+    "description" : "",
+    "locations" : 
+    {
+        "New Delhi" :
+        {
+            "description" : "",
+            "tags" : [],
+            "sub_locations" :
+            {
+                "Home" :
+                {
+                    "description" : "You are in your house.",
+                    "tags" : [],
+                    "inventory" : 
+                    {
+                        "tables" : {
+                            "static" : [],
+                            "dynamic" : []
+                        },
+                        "spawn" : 
+                        {
+                            "instanced" : [],
+                            "stacked" : []
+                        },
+                        "load" : 
+                        {
+                            "instanced" : [],
+                            "stacked" : []
+                        }
+                    },
+                    "entities" :
+                    {
+                        "spawn" : {},
+                        "load" : []
+                    },
+                    "location_events" :
+                    [
+                        {
+                            "type" : "output_with_pauses", "args" : 
+                            {
+                                "output" : 
+                                [
+                                    {"text" : "You suddenly wake up on your bed, your body covered in sweat.", "tag" : "narrator"}, 
+                                    {"text" : "You haven't had such a vivid dream in so long. What kind of a silly dream even was that? You think to yourself.", "tag" : "narrator"},
+                                    {"text" : "You look at the time and realize you are already running late for the interview which was at 8:30. No time to lose.", "tag" : "narrator"}
+                                ], 
+                                "pause" : 25, 
+                                "tick_based" : true
+                            }
+                        }
+                    ],
+                    "exits" : 
+                    {
+                        
+                    }
+                }
+            }
+        }
+    }
+}

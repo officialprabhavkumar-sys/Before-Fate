@@ -1,0 +1,39 @@
+{
+    "meta" : 
+    {
+        "base_stat_points" : 10,
+        "max_saturation" : 1.5,
+        "base_reinforcement" : 1000,
+        "order" : ["Mortal", "Pulse Opening", "Body Tempering", "Blood Tempering", "Bone Reforging"]
+    },
+
+    "stages" : {
+
+        "Mortal" : {
+            "stat_points_multiplier" : 1,
+            "reinforcement_multiplier" : 1
+        },
+
+        "Pulse Opening" : {
+            "stat_points_multiplier" : 2,
+            "reinforcement_multiplier" : 2
+        },
+
+        "Body Tempering" : {
+            "stat_points_multiplier" : 4,
+            "reinforcement_multiplier" : 4
+        },
+
+        "Blood Tempering" : {
+            "stat_points_multiplier" : 8,
+            "reinforcement_multiplier" : 10
+        },
+
+        "Bone Reforging" : {
+            "stat_points_multiplier" : 35,
+            "reinforcement_multiplier" : 60
+        }
+
+    }
+
+}

@@ -1,0 +1,24 @@
+{
+    "meta" : {
+        "base_unit" : 1000,
+        "breakthrough_threshold" : 1.2,
+        "max_saturation" : 1.5,
+        "qi_types" : ["Mortal Qi", "Immortal Qi", "Celestial Qi"],
+        "order" : ["Mortal", "Qi Sensing", "Qi Foundation"]
+    },
+
+    "stages" : {
+
+        "Mortal" : {
+            "capacity_multiplier" : [1, 0, 0]
+        },
+        
+        "Qi Sensing" : {
+            "capacity_multiplier" : [2, 0, 0]
+        },
+
+        "Qi Foundation" : {
+            "capacity_multiplier" : [10, 0, 0]
+        }
+    }
+}

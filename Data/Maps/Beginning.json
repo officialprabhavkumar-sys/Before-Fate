@@ -1,0 +1,77 @@
+{
+    "name" : "Unknown Map",
+    "description" : "",
+    "locations" : 
+    {
+        "Unknown Region" :
+        {
+            "description" : "",
+            "tags" : [],
+            "sub_locations" :
+            {
+                "Unknown Location" :
+                {
+                    "description" : "You don't quite understand where you are, But there's something about this place that fills you with a feeling....excitement. I know, the game looks great.",
+                    "tags" : [],
+                    "inventory" : 
+                    {
+                        "tables" : 
+                        {
+                            "static" : [],
+                            "dynamic" : []
+                        },
+                        "spawn" : 
+                        {
+                            "instanced" : [],
+                            "stacked" : []
+                        },
+                        "load" : 
+                        {
+                            "instanced" : [],
+                            "stacked" : []
+                        }
+                    },
+                    "entities" :
+                    {
+                        "spawn" : {},
+                        "load" : []
+                    },
+                    "location_events" :
+                    [
+                        {
+                            "type" : "output_with_pauses", "args" : 
+                            {
+                                "output" : 
+                                [
+                                    {"text" : "beep.."}, 
+                                    {"text" : "beep..beep"}, 
+                                    {"text" : "beep..boop"}, 
+                                    {"text" : "beep_boop?"}, 
+                                    {"text" : "No no no, that won't work, not quite my style.", "tag" : "narrator"}, 
+                                    {"text" : "First of all, Welcome to Before Fate.", "tag" : "narrator"}, 
+                                    {"text" : "I'm glad to see someone here.", "tag" : "narrator"}, 
+                                    {"text" : "You might be wondering who I am, or maybe not. But Ill tell you anyway. I am the narrator.", "tag" : "narrator"}, 
+                                    {"text" : "Don't worry, this is an open world game, you only have to bear with me for a short while...for now.", "tag" : "narrator"},
+                                    {"text" : "How about you start by looking around a bit? Try out the \"look\" command.", "tag" : "narrator"}
+                                ], 
+                                "pause" : 25, 
+                                "tick_based" : true
+                            }
+                        },
+                        {
+                            "type" : "spawn_entity_with_id", 
+                            "args" : 
+                            {
+                                "entity_type" : "Narrator", 
+                                "entity_template_name" : "__narrator__", 
+                                "entity_id" : "__narrator_1__", 
+                                "sublocation" : "Unknown Map/Unknown Region/Unknown Location"
+                            }
+                        }
+                    ],
+                    "exits" : {}
+                }
+            }
+        }
+    }
+}

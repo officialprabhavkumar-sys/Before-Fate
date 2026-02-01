@@ -1,0 +1,26 @@
+{
+
+    "meta" : {
+        "entity_type" : "Narrator"
+    },
+
+    "templates" : {
+
+        "__narrator__" : {
+            "cultivation" : {"physical" : {"0" : 1}, "qi" : {"0" : 1}, "soul" : {"0" : 1}},
+            "stats" : {
+                "base_stats" :
+                {
+                    "combat_stats" : {"vitality" : 0.2, "strength" : 0.3, "agility" : 0.2, "endurance" : 0.3},
+                    "other_stats" : {"charisma" : 0, "luck" : 2}
+                },
+
+                "modifiers" : {}
+            },
+            "inventory" : {"tables" : {"static" : [], "dynamic" : []}, "instanced" : [], "stacked" : []},
+            "loadout" : {},
+            "interaction" : "__narrator_beginning_interaction__",
+            "description" : "CLASSIFICATION FAILED. Entity does not exist within detectable layers. Narrative authority exceeds system parameters."
+        }
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "leave" : {
+        "text" : "Leave.",
+        "result" : [{"type" : "interaction_end", "args" : {}}]
+    },
+
+    "trade" : {
+        "text" : "Trade.",
+        "result" : [{"type" : "output", "args" : {"text" : "Take a look.", "tag" : "npc"}} , {"type" : "start_trade", "args" : {}}]
+    },
+
+    "attack" : {
+        "text" : "Attack!",
+        "result" : [{"type" : "start_combat_with_interaction_entity", "args" : {}}]
+    }
+}

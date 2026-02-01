@@ -1,0 +1,26 @@
+{
+    "meta" : 
+    {
+        "base_unit" : 1000,
+        "breakthrough_threshold" : 1.2,
+        "max_saturation" : 1.5,
+        "order" : ["Mortal", "Soul Awakening", "Soul Foundation"]
+    },
+
+    "stages" : {
+
+        "Mortal" : {
+            "capacity_multiplier" : 1
+        },
+
+        "Soul Awakening" : {
+            "capacity_multiplier" : 2
+        },
+
+        "Soul Foundation" : {
+            "capacity_multiplier" : 4
+        }
+
+    }
+
+}

@@ -1,0 +1,75 @@
+{
+    "name" : "Hargoth Kingdom",
+    "description" : "A beautiful, peaceful kingdom free from the worries of war and famine, ruled by the Hargoth family.",
+    "locations" :
+    {
+        "Spring Field":
+        {
+        "description" : "A small, humble town which has a history of creating legends.",
+        "tags" : [],
+        "sub_locations" : 
+            {
+                "Town Square" :
+                {
+                    "description" : "It's a town square. What do you expect exactly?",
+                    "inventory" : 
+                    {
+                        "tables" : {
+                            "static" : [],
+                            "dynamic" : []
+                        },
+                        "spawn" : 
+                        {
+                            "instanced" : [],
+                            "stacked" : []
+                        },
+                        "load" : 
+                        {
+                            "instanced" : [],
+                            "stacked" : []
+                        }
+                    },
+                    "entities" :
+                    {
+                        "spawn" : {"Bandit" : {"Bandit_Basic" : 1}},
+                        "load" : []
+                    },
+                    "location_events" : [],
+                    "tags" : [],
+                    "exits" : {"Town Hall" : "Hargoth Kingdom/Spring Field/Town Hall", "General Store" : "Hargoth Kingdom/Spring Field/General Store", "Weapon Store" : "Hargoth Kingdom/Spring Field/Weapon Store", "Armor Store" : "Hargoth Kingdom/Spring Field/Armor Store"}
+                },
+
+                "Town Hall" :
+                {
+                    "description" : "A large well made building, now carrying the marks of the passing of time with the board \"Town Hall\" hanging on it.",
+                    "inventory" : 
+                    {
+                        "tables" :
+                        {
+                            "static" : [],
+                            "dynamic" : []
+                        },
+                        "spawn" : 
+                        {
+                            "instanced" : [],
+                            "stacked" : {}
+                        },
+                        "load" : 
+                        {
+                            "instanced" : [],
+                            "stacked" : {}
+                        }
+                    },
+                    "entities" :
+                    {
+                        "spawn" : {},
+                        "load" : []
+                    },
+                    "on_entry" : [],
+                    "tags" : [],
+                    "exits" : {"Town Square" : "Hargoth Kingdom/Spring Field/Town Square"}
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "INR" : {"value" : 1, "world" : "modern", "description" : "Indian Standard Currency."},
+    "Bronze Coin" : {"value" : 1, "world" : "cultivation", "description" : "Bronze Coin."},
+    "Silver Coin" : {"value" : 10, "world" : "cultivation", "description" : "Silver Coin."},
+    "Gold coin" : {"value" : 100, "world" : "cultivation", "description" : "Gold Coin."}
+}

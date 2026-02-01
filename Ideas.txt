@@ -1,0 +1,44 @@
+Now, all that's left is combat for the game.
+Combat in the end will depend on these things:
+1. The distance all the enemies start at will depend on their average cultivation and secondly, the tag the location has.
+because a town hall can't start fights at 1000km can you? So, the max distance will be decided by the sublocation tags.
+2. As for the combat groups, each group will start at the decided distance and their AIs will decide what to do.
+The combat groups will be decided based on 2 things, one whether it's a scripted fight, and if so, only the predefined
+participants will fight, quest based fights also come under scripted events and they will be able to choose how to group
+participants based on tags. Finally, as for unscripted fights, that are completely random, there will be a relations table.
+which will decide whether other's available entities participate in the combat or not, and if they do, then which group
+they will join. 
+
+both of the above jobs will be dealt with by the combat initializer.
+After the combat initializer is done, the state will be set to combat, and a combatcontext object will be made.
+The combatcontext object will hold all the entities, their temporary tags and their groups.
+It will also hold all the loot from all entities until the battle is done, then the player can just choose what they wanna take
+and leave the rest - which will be destroyed or sent to the sublocation inventory. Depends on the player.
+
+finally, as for the combat itself, now we get to the good part.
+First of all, all entities have a cultivation - obviously, and so they also have a stats object.
+Now, the stats object has all the basic stats like strenght, endurance, agility, hp and all that.
+It also has modifiers (will come in handy very soon).
+I also have a basicstatcalculator class that can apply and give back all the modified stats.
+Now, the entities themselves will only have the normal stats, but the player also has a skillstate object.
+It contains all the info about the player modifiers and technique points and stuff so the player stats have to go through it too.
+Now the fun part are the techniques and skills.
+the player will be able to get skills using skill points, that the player will gain from doing stuff - it will basically
+just be a command that will give the player some xp that can be called from pretty much anywhere, its just a result.
+The skills themselves can also have conditions in the form of string conditions, if and only if the player fulfills them, can
+then unlock the skill using skillpoints.
+There are two types of skills : 1. static skills - that will be permanent modifiers.
+and 2. dynamic skills - which will be used in combat and also will be evaluated every tick in combat.
+dynamic skills will temporarily boost the player's stats during combat once their condition is fulfilled. All the skills that are
+active must gain a "active" tag so as to not apply the skills over and over again.
+Now onto techniques, techniques will be of 3 types, physical techniques, qi techniques and soul techniques.
+all of them will be able to do specific things, like the physical techniques will consume stamina and will only be able to cause
+physical damage.
+As for qi, qi will be "brought out" of the entities reserves as the battle goes on, allowing the entity to cast qi techniques.
+qi techniques can be of 2 types:
+1. attack techniques - like ranged and melee.
+2. defense techniques - like barries of different kinds that protect different parts (strongly) or the whole body (weakly).
+
+finally, soul will be exclusively for applying buffs to yourself, applying debuffs on enemies and defending against debuffs.
+there can also be techniques that use 2 or 3 different cultivations to do multiple things, like:
+swing sword (physical), send out slash (qi), apply trauma (soul) IF it connects. or you just wasted 3 resources.

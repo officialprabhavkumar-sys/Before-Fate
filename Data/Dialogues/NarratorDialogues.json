@@ -1,0 +1,111 @@
+{
+    "__narrator_introduction_self__" : {
+        "text" : "Ask who he is.",
+        "result" : [
+            {"type" : "output_with_pauses", "args" : {
+                "output" : [
+                    {"text" : "Me? Well I'm glad you asked.", "tag" : "narrator"}, 
+                    {"text" : "You can call me, \"The narrator\".", "tag" : "narrator"}, 
+                    {"text" : "That's what all the others call me, anyway.", "tag" : "narrator"}
+                    ], 
+                    "pause" : 25, 
+                    "tick_based" : true}
+                    }
+                ]
+    },
+    "__narrator_introduction_game__" : 
+    {
+        "text" : "Ask where you are.",
+        "result" : 
+        [
+            {
+                "type" : "output_with_pauses", "args" : 
+                {
+                    "output" : 
+                    [
+                        {"text" : "You are currently in an active runtim- oops, excuse me.", "tag" : "narrator"}, 
+                        {"text" : "I usually don't phrase it that way.", "tag" : "narrator"}, 
+                        {"text" : "You are currently in one of the few places where fate can't touch you. You're welcome.", "tag" : "narrator"}
+                    ], 
+                    "pause" : 25, 
+                    "tick_based" : true
+                }
+            },
+            {
+                "type" : "schedule_results_by_engine_tick", 
+                "args" : 
+                {
+                    "tick_offset" : 76,
+                    "results" : 
+                    [
+                        {
+                            "type" : "interaction_goto",
+                            "args" :
+                            {
+                                "interaction_id" : "__narrator_beginning_introduction_game_followup_interaction__"
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "__narrator_introduction_game_followup__" : 
+    {
+        "text" : "Ask what \"The narrator\" meant by \"place where fate can't touch you\".",
+        "result" : 
+        [
+            {
+                "type" : "schedule_results_by_engine_tick", 
+                "args" : 
+                {
+                    "tick_offset" : 101,
+                    "results" : 
+                    [
+                        {
+                            "type" : "output_with_pauses", 
+                            "args" : 
+                            {
+                                "output" : 
+                                [
+                                    {"text" : "A portal suddenly appears nearby.", "tag" : "ominous"},
+                                    {"text" : "Just walk through that portal and you will get back to where you were.", "tag" : "narrator"}, 
+                                    {"text" : "I hope you have a good...game.", "tag" : "narrator"}
+                                ],
+                                "pause" : 25, 
+                                "tick_based" : true
+                            }
+                        }, 
+                        {
+                            "type" : "add_exit_to_sublocation", 
+                            "args" : 
+                            {
+                                "sublocation" : "Unknown Map/Unknown Region/Unknown Location",
+                                "exit_name" : "portal",
+                                "exit_path" : "India/New Delhi/Home"
+                            }
+                        },
+                        {
+                            "type" : "interaction_end",
+                            "args" : {}
+                        }
+                    ]
+                }
+            },
+            {
+                "type" : "output_with_pauses", 
+                "args" : 
+                {
+                    "output" : 
+                    [
+                        {"text" : "Huh? I have no idea what you're talking about. Anyhow.", "tag" : "narrator"}, 
+                        {"text" : "It's about time you got going.", "tag" : "narrator"}, 
+                        {"text" : "Before you go however.", "tag" : "narrator"}, 
+                        {"text" : "If you ever need some help. Just write \"help\". Ill be happy to.", "tag" : "narrator"}
+                    ], 
+                    "pause" : 25, "tick_based" : true
+                }
+            }
+        ]
+    }
+}

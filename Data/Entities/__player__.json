@@ -1,0 +1,26 @@
+{
+    "entity_type" : "Player",
+    "name" : "Player",
+    "id" : "__player__",
+    "cultivation" : {},
+    "techniques" : [],
+    "hp" : 50,
+    "stamina" : 35,
+    "stats" : {
+        "combat_stats" : {
+            "vitality" : 1,
+            "strength" : 1,
+            "agility" : 1,
+            "endurance" : 1
+        },
+        "other_stats" : {
+            "charisma" : 0,
+            "luck" : 0
+        }
+    },
+    "inventory" : {},
+    "is_alive" : true,
+    "tags" : ["Human", "Player"],
+    "loadout" : {},
+    "location" : "Unknown Map/Unknown Region/Unknown Location"
+}

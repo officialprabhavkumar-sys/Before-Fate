@@ -1,0 +1,27 @@
+{
+    "meta" : {
+        "base_unit" : 10,
+        "max_saturation" : 1.5,
+        "breakthrough_threshold" : 1.2,
+        "order" : ["Mortal", "Chaos Awakening", "Chaos Foundation", "Chaos Consolidation"]
+    },
+
+    "stages" : {
+
+        "Mortal" : {
+            "capacity_multiplier" : 0.1
+        },
+
+        "Chaos Awakening" : {
+            "capacity_multiplier" : 1
+        },
+
+        "Chaos Foundation" : {
+            "capacity_multiplier" : 2
+        },
+
+        "Chaos Consolidation" : {
+            "capacity_multiplier" : 5
+        }
+    }
+}

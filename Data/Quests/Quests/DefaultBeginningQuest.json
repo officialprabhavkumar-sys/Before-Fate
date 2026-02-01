@@ -1,0 +1,9 @@
+{
+    "__default_beginning_interview_quest__" : 
+    {
+        "name" : "The Interview",
+        "description" : "You have an interview.",
+        "stages" : ["__default_beginning_quest_interview_1"],
+        "__start__" : "__default_beginning_quest_interview_1"
+    }
+}

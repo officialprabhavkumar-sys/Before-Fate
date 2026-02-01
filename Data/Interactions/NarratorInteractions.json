@@ -1,0 +1,21 @@
+{
+    "__narrator_beginning_interaction__" :
+    {
+        "text" : "Good. You now know how to talk.",
+        "dialogues" : 
+        [
+            "__narrator_introduction_self__",
+            "__narrator_introduction_game__"
+        ],
+        "exitable" : false
+    },
+    "__narrator_beginning_introduction_game_followup_interaction__" :
+    {
+        "text" : "",
+        "dialogues" : 
+        [
+            "__narrator_introduction_game_followup__"
+        ],
+        "exitable" : false
+    }
+}
