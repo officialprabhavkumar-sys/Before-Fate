@@ -2,6 +2,7 @@
     "__default_beginning_quest_interview_1" : 
     {
         "description" : "",
+        "on_entry" : [],
         "success_conditions" : [],
         "success_result" : []
     }
