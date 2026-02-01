@@ -59,7 +59,7 @@ You do not need to modify engine code to create a game. All game content is defi
 
 Upon starting up the game from the run.py file, the engine loads up all the data in the **data_path** directory.
 The **data_path** directory is expected to have the following sub-directories:
-1. **Cultivation** - More on this later, it's too larger to explain in one line. Personal addition.
+1. **Cultivation** - More on this later, it's too large to explain in one line. Personal addition.
 2. **Currency** - json files that have all the information about the different currencies that should be available in the world to be used for trading.
 3. **Dialogues** - json files that must house the all the different dialogues to be used during an interaction with any entity.
 4. **Entities** - json files that hold templates for entities. These templates can later be used in the map to spawn many entities easily.
