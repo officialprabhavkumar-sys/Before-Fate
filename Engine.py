@@ -11,7 +11,7 @@ from PySide6.QtCore import QTimer
 from GeneralVerifier import verifier
 from UIEngine import UIEngine
 from NameLoader import NamesLoader
-from Items import Item, Stack, Armor, MeleeWeapon, RangedWeapon, ItemsLoader, ItemsSpawner, ItemRegistry
+from Items import Item, Stack, Consumable, Armor, MeleeWeapon, RangedWeapon, ItemsLoader, ItemsSpawner, ItemRegistry
 from Money import Money, CurrencyLoader, MoneyLoader
 from Cultivation import CultivationCreator, CultivationLoader, CultivationCalculator, Cultivation
 from Stats import BasicStatCalculator
@@ -193,8 +193,11 @@ class GameActions():
     def move_entity_from_to(self, entity_id : str, location_from : str, location_to : str) -> None:
         location_from : SubLocation= self.get_sublocation_from_path(sublocation_path = location_from)
         location_to : SubLocation = self.get_sublocation_from_path(sublocation_path = location_to)
-        location_to.add_entity(location_from.entities.pop(entity_id))
-    
+        entity_to_move : Entity = location_from.entities.pop(entity_id)
+        location_to.add_entity(entity = entity_to_move)
+        if isinstance(entity_to_move, Player):
+            self.sync_engine_location_to_player_location()
+
     def output_with_pauses(self, output : list[dict], pause : int | float, tick_based : bool = False) -> None:
         if not tick_based:
             current_time = self.world_state.world_time.to_world_timestamp()
@@ -707,7 +710,7 @@ class GameActions():
     def get_player_location_as_list(self) -> list[str]:
         return self.world_state.player.location.split("/")
     
-    def sync_engine_location_to_player_location(self) -> SubLocation:
+    def sync_engine_location_to_player_location(self) -> None:
         self.game_engine.current_location = self.get_sublocation_from_path(self.world_state.player.location)
     
     def process_sublocation_events(self) -> None:
@@ -879,6 +882,7 @@ class GameActions():
                 self.handle_trade(item_sell_id = item_sell_id, sell_id_to_price_mapping = trade_session.merchant_sell_id_to_price, sell_id_to_item_mapping = trade_session.merchant_sell_id_to_item, sell_id_to_stack_mapping = trade_session.merchant_sell_id_to_stack, from_inventory = trader_inventory, to_inventory = player_inventory, from_trade_profile = trader_profile, to_trade_profile = player_profile, amount = amount)
             else:
                 self.handle_trade(item_sell_id = item_sell_id, sell_id_to_price_mapping = trade_session.merchant_sell_id_to_price, sell_id_to_item_mapping = trade_session.merchant_sell_id_to_item, sell_id_to_stack_mapping = trade_session.merchant_sell_id_to_stack, from_inventory = trader_inventory, to_inventory = player_inventory, from_trade_profile = trader_profile, to_trade_profile = player_profile)
+            self.set_player_inventory_mapping()
         elif trade_type == "sell":
             if item_sell_id in self.game_engine.trade_session.player_sell_id_to_item:
                 item = self.game_engine.trade_session.player_sell_id_to_item[item_sell_id]
@@ -890,10 +894,13 @@ class GameActions():
                 self.handle_trade(item_sell_id = item_sell_id, sell_id_to_price_mapping = trade_session.player_sell_id_to_price, sell_id_to_item_mapping = trade_session.player_sell_id_to_item, sell_id_to_stack_mapping = trade_session.player_sell_id_to_stack, from_inventory = player_inventory, to_inventory = trader_inventory, from_trade_profile = player_profile, to_trade_profile = trader_profile, amount = amount)
             else:
                 self.handle_trade(item_sell_id = item_sell_id, sell_id_to_price_mapping = trade_session.player_sell_id_to_price, sell_id_to_item_mapping = trade_session.player_sell_id_to_item, sell_id_to_stack_mapping = trade_session.player_sell_id_to_stack, from_inventory = player_inventory, to_inventory = trader_inventory, from_trade_profile = player_profile, to_trade_profile = trader_profile)
+            self.set_player_inventory_mapping()
+        
         elif trade_type == "view":
             if not user_input[1].strip().lower() == "self":
                 self.output(f"I'm going to take a wild guess and say you read help. Unfortunately, you didn't read it well. Anyhow, since I am nice, ill just let you see your inventory even after you wrote \"{user_input[1]}\" instead of the correct \"self\". If you wanted to just see the trader's inventory again, just write view without anything else after that.", "narrator")
             self.display_trading_info_from_dicts(sell_id_to_price = trade_session.player_sell_id_to_price, sell_id_to_item = trade_session.player_sell_id_to_item, sell_id_to_stack = trade_session.player_sell_id_to_stack)
+        
         elif trade_type == "inspect":
             item_id_to_inspect = user_input[1].strip()
             if item_id_to_inspect in trade_session.merchant_sell_id_to_price:
@@ -1238,7 +1245,36 @@ class GameActions():
                         matches_criteria = True
                 if matches_criteria:
                     self.output(f"{quests_found}) Name : {quest.name}\n{quest.description}", "info")
-                    
+            return
+        elif first_arg == "use":
+            if player_input_length < 2:
+                self.output("use what? You need to follow up \"use\" with an item id. Maybe try looking into your inventory first to see what you have?", "narrator")
+                return
+            if player_input_length > 2:
+                self.output("\"use\" takes exactly one argument.", "info")
+                return
+            item_id_to_use = player_input[1]
+            if not self.game_engine.current_player_inventory_mapping:
+                self.output("use what???? Even I don't know what you have, maybe try looking into your inventory first?", "narrator")
+                return
+            if not item_id_to_use in self.game_engine.current_player_inventory_mapping["id_to_stack"]:
+                self.output(f"No such item by the id \"{item_id_to_use}\" found in inventory.")
+                if not self.game_engine.last_command.lower() in {"inv", "inventory"}:
+                    self.output(f"You didn't use \"inventory\" did you? I'm not even surprised.", "narrator")
+                return
+            item = self.game_engine.current_player_inventory_mapping["id_to_item"][item_id_to_use]
+            if not isinstance(item, Consumable):
+                self.output(f"How do you expect to use \"{item.name}\"?", "narrator")
+                return
+            for condition in item.requirements:
+                if not self.interpreter.interpret(condition = condition):
+                    self.output("You don't meet the requirements to use that item.", "narrator")
+                    return
+            self.handle_results(item.effects)
+            self.world_state.player.inventory.remove_stack(stack_name = item.name, amount = 1)
+            self.set_player_inventory_mapping()
+            return
+        
         else:
             self.output(f"What do you mean \"{original_player_input}\"? That's not a valid command. Try using \"Help\" instead.", "narrator")
             return
@@ -1255,6 +1291,7 @@ class GameActions():
         self.output("8) \"equip\" : Followed by the item id of the item you want to equip. Use \"inventory\" to see item ids.", "info")
         self.output("9) \"unequip\" : Followed by any of the following : (\"weapon\", \"helmet\", \"chestplate\", \"legging\", \"boot\") to unequip the item at in that particular slot.", "info")
         self.output("10) \"quests\" : Followed by \"completed\", \"active\" or \"failed\" to view completed quests, active quests and failed quests respectively.")
+        self.output("11) \"use\" : Followed by the item id of the item you want to use. Use \"inventory\" to see item ids.", "info")
         
     def process_game_player_input(self) -> None:
         while not self.ui_engine.input_queue.empty():
