@@ -1,0 +1,17 @@
+{
+    "__receptionist_interaction_1__" :
+    {
+        "text" : "Welcome to FateCreations! How can I assist you today?",
+        "dialogues" : 
+        [
+            "__receptionist_interview_question__"
+        ],
+        "exitable" : true
+    },
+    "__receptionist_interview_question_followup_interaction__" :
+    {
+        "text" : "Welcome to FateCreations! How can I assist you today?",
+        "dialogues" : ["__receptionist_interview_question_followup__"],
+        "exitable" : true
+    }
+}

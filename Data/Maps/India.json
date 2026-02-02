@@ -51,10 +51,18 @@
                             }
                         },
                         {
-                            "type" : "start_quest",
+                            "type" : "schedule_result_by_engine_tick",
                             "args" : 
                             {
-                                "quest_id" : "__default_beginning_interview_quest__"
+                                "tick_offset" : 76,
+                                "result" : 
+                                {
+                                    "type" : "start_quest",
+                                    "args" : 
+                                        {
+                                            "quest_id" : "__default_beginning_interview_quest__"
+                                        }
+                                }
                             }
                         }
                     ],
@@ -67,7 +75,7 @@
                 "Street" :
                 {
                     "description" : "You are standing on a busy street in New Delhi. The sounds of honking cars and chattering people fill the air.",
-                    "tags" : [],
+                    "tags" : ["large"],
                     "inventory" : 
                     {
                         "tables" : {
@@ -87,7 +95,7 @@
                     },
                     "entities" :
                     {
-                        "spawn" : {},
+                        "spawn" : {"GeneralHuman" : {"general_person_1" : 3}},
                         "load" : []
                     },
                     "location_events" : [],
@@ -100,7 +108,7 @@
 
                 "FateCreations" :
                 {
-                    "description" : "You are outside the FateCreations building, one of the biggest companies in India. The modern architecture stands tall against the skyline.",
+                    "description" : "You are inside the FateCreations building, one of the biggest companies in India. The modern architecture stands tall against the skyline and the interior is minimal but clean.",
                     "tags" : [],
                     "inventory" : 
                     {
@@ -121,7 +129,7 @@
                     },
                     "entities" :
                     {
-                        "spawn" : {},
+                        "spawn" : {"GeneralHuman" : {"__story_receptionist_1__" : 1}},
                         "load" : []
                     },
                     "location_events" : [],

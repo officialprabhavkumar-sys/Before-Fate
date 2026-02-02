@@ -1,0 +1,9 @@
+{
+    "__pause__" : 
+    {
+        "description" : "Quest on hold. Destiny will guide your way.",
+        "on_entry" : [],
+        "success_conditions" : [],
+        "success_result" : []
+    }
+}

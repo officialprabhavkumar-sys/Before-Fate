@@ -85,6 +85,12 @@ class Human(Entity):
             damage_distribution = {damage_type : damage_amount / total_damage for damage_type, damage_amount in damage.items()}
             return DamagePacket(**{damage_type : (damage_amount + damage_distribution[damage_type] * self.stats.combat_stats.strength) for damage_type, damage_amount in damage.items()})
 
+class GeneralHuman(Human):
+    def __init__(self, name : str, id : str, cultivation : Cultivation, hp : int | float, stamina : int | float, stats : Stats, description : str = "An ordinary looking person."):
+        super().__init__(name = name, id = id, cultivation = cultivation, hp = hp, stamina = stamina, stats = stats, description = description)
+        self.tags.append("GeneralHuman")
+        self.interaction = None
+
 class Bandit(Human):
     def __init__(self, name : str, id : str, cultivation : Cultivation, hp : int | float, stamina : int | float, stats : Stats, description : str = "A Bandit."):
         super().__init__(name = name, id = id, cultivation = cultivation, hp = hp, stamina = stamina, stats = stats, description = description)
@@ -144,8 +150,8 @@ class EntityRegistry():
     
 class EntityLoader():
     
-    MAPPING = {"Bandit" : Bandit, "Merchant" : Merchant, "Guard" : Guard, "Player" : Player, "Narrator" : Narrator}
-    DEFAULT_INTERACTIONS_MAPPING = {"Bandit" : "default_bandit_interaction", "Merchant" : "default_merchant_interaction", "Guard" : "default_guard_interaction"}
+    MAPPING = {"GeneralHuman" : GeneralHuman, "Bandit" : Bandit, "Merchant" : Merchant, "Guard" : Guard, "Player" : Player, "Narrator" : Narrator}
+    DEFAULT_INTERACTIONS_MAPPING = {"GeneralHuman" : "default_general_human_interaction", "Bandit" : "default_bandit_interaction", "Merchant" : "default_merchant_interaction", "Guard" : "default_guard_interaction"}
     
     def __init__(self, name_loader : NamesLoader, entity_registry : EntityRegistry, cultivation_creator : CultivationCreator, basic_stat_calculator : BasicStatCalculator, item_spawner : ItemsSpawner, table_resolver : TableResolver, interaction_loader : InteractionLoader, dialogue_loader : DialogueLoader, technique_loader : TechniqueLoader):
         verifier.verify_type(name_loader, NamesLoader, "name_loader")

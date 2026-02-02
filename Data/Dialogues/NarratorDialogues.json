@@ -23,7 +23,7 @@
                 {
                     "output" : 
                     [
-                        {"text" : "You are currently in an active runtim- oops, excuse me.", "tag" : "narrator"}, 
+                        {"text" : "You are currently in an active chaos rift's cent- oops, excuse me.", "tag" : "narrator"}, 
                         {"text" : "I usually don't phrase it that way.", "tag" : "narrator"}, 
                         {"text" : "You are currently in one of the few places where fate can't touch you. You're welcome.", "tag" : "narrator"}
                     ], 
@@ -101,7 +101,7 @@
                         {"text" : "Huh? I have no idea what you're talking about. Anyhow.", "tag" : "narrator"}, 
                         {"text" : "It's about time you got going.", "tag" : "narrator"}, 
                         {"text" : "Before you go however.", "tag" : "narrator"}, 
-                        {"text" : "If you ever need some help. Just write \"help\". Ill be happy to.", "tag" : "narrator"}
+                        {"text" : "Remember, If you ever need some help. Just write \"help\". Ill be happy to.", "tag" : "narrator"}
                     ], 
                     "pause" : 25, "tick_based" : true
                 }

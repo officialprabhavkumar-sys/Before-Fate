@@ -1,7 +1,7 @@
 {
     "__default_beginning_quest_interview_1__" : 
     {
-        "description" : "",
+        "description" : "Go to FateCreations in New Delhi for your interview before 8:30 AM.",
         "on_entry" : [],
         "success_conditions" : 
         [
@@ -13,33 +13,8 @@
                 "type" : "conditional",
                 "args" : 
                 {
-                    "condition" : "@get_current_time{} > *20840010830",
+                    "condition" : "@get_current_time{} < *20840010830",
                     "then" : 
-                    [
-                        {
-                            "type" : "output_with_pauses",
-                            "args" : 
-                            {
-                                "output" : 
-                                [
-                                    {"text" : "You arrive at FateCreations, but unfortunately, you are late for your interview.", "tag" : "narrator"},
-                                    {"text" : "The receptionist informs you that the interview has already concluded and you have missed your chance.", "tag" : "narrator"},
-                                    {"text" : "There's nothing more you can do here.", "tag" : "narrator"}
-                                ],
-                                "pause" : 25,
-                                "tick_based" : true
-                            }
-                        },
-                        {
-                            "type" : "set_quest_stage",
-                            "args" : 
-                            {
-                                "quest_id" : "__default_beginning_interview_quest__",
-                                "stage_id" : "__default_beginning_quest_interview_2__"
-                            }
-                        }
-                    ],
-                    "other_wise" : 
                     [
                         {
                             "type" : "output_with_pauses",
@@ -61,36 +36,61 @@
                                     {"text" : "Excuse me, that was not supposed to happen. I only have a little power left but I suppose it should be enough.", "tag" : "narrator"},
                                     {"text" : "The world around you shifts very slightly. You blink and you find yourself outside of the building again.", "tag" : "narrator"},
                                     {"text" : "What is happening to you today? Are you hallucinating? You think to yourself.", "tag" : "narrator"},
-                                    {"text" : "Anyhow, you should head into the building for your interview. You think to yourself and head inside.", "tag" : "narrator"},
-                                    {"text" : "You walk into the building, but unfortunately, you are late for your interview.", "tag" : "narrator"},
-                                    {"text" : "The receptionist informs you that the interview has already concluded and you have missed your chance.", "tag" : "narrator"},
-                                    {"text" : "There's nothing more you can do here.", "tag" : "narrator"}
+                                    {"text" : "Anyhow, you should head into the building for your interview and talk with the receptionist. You think to yourself.", "tag" : "narrator"}
                                 ],
                                 "pause" : 25,
                                 "tick_based" : true
                             }
                         },
                         {
+                            "type" : "schedule_result_by_engine_tick",
+                            "args" : 
+                            {
+                                "tick_offset" : 376,
+                                "result" : 
+                                {
+                                    "type" : "set_quest_stage",
+                                    "args" : 
+                                    {
+                                        "quest_id" : "__default_beginning_interview_quest__",
+                                        "stage_id" : "__default_beginning_quest_interview_2__"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "type" : "schedule_results_by_engine_tick",
+                            "args" : 
+                            {
+                                "tick_offset" : 300,
+                                "results" :
+                                [
+                                    {
+                                        "type" : "transport_player_to_sublocation",
+                                        "args" : 
+                                        {
+                                            "sublocation_path" : "India/New Delhi/Street"
+                                        }
+                                    },
+                                    {
+                                        "type" : "move_time_forward_by_ticks",
+                                        "args" : 
+                                        {
+                                            "ticks" : 30
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "other_wise" : 
+                    [
+                        {
                             "type" : "set_quest_stage",
                             "args" : 
                             {
                                 "quest_id" : "__default_beginning_interview_quest__",
                                 "stage_id" : "__default_beginning_quest_interview_2__"
-                            }
-                        },
-                        {
-                            "type" : "schedule_result_by_engine_tick",
-                            "args" : 
-                            {
-                                "tick_offset" : 300,
-                                "result" : 
-                                {
-                                    "type" : "move_time_forward_by_ticks",
-                                    "args" : 
-                                    {
-                                        "ticks" : 30
-                                    }
-                                }
                             }
                         }
                     ]
@@ -100,9 +100,9 @@
     },
     "__default_beginning_quest_interview_2__" : 
     {
-        "description" : "",
+        "description" : "You should talk with the receptionist.",
         "on_entry" : [],
-        "success_conditions" : [],
+        "success_conditions" : ["@quest_flag_is_true{|quest_id| = |__default_beginning_interview_quest__|, |flag| = |talked_with_receptionist|}"],
         "success_result" : []
     }
 }

@@ -1,4 +1,10 @@
 {
+    "default_general_human_interaction" : {
+        "text" : "The person looks you up and down, wondering what you want from them.",
+        "dialogues" : [],
+        "exitable" : true
+    },
+
     "default_merchant_interaction" : {
         "text" : "The merchant looks at you with an inviting gaze, Clearly happy to sell you his wares.",
         "dialogues" : ["trade"],

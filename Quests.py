@@ -73,7 +73,7 @@ class QuestManager():
             quest_condition_pool.add(quest_conditional = quest_fail_conditional)
             
     def to_dict(self) -> dict:
-        return {quest_id : self.quest_states[quest_id] for quest_id in self.quest_states.keys()}
+        return {quest_id : self.quest_states[quest_id].to_dict() for quest_id in self.quest_states.keys()}
     
     def load(self, data : dict) -> None:
         quest_states = {}

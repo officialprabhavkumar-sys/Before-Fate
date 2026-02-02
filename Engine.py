@@ -89,7 +89,9 @@ class GameActions():
             "schedule_results_by_engine_tick" : self.schedule_results_by_engine_tick,
             "add_exit_to_sublocation" : self.add_exit_to_sublocation,
             "remove_exit_from_sublocation" : self.remove_exit_from_sublocation,
-            "move_time_forward_by_ticks" : self.move_time_forward_by_ticks
+            "move_time_forward_by_ticks" : self.move_time_forward_by_ticks,
+            "transport_player_to_sublocation" : self.transport_player_to_sublocation,
+            "set_current_entity_interaction_with_id" : self.set_current_entity_interaction_with_id
         }
         self.command_queue = CommandQueue()
     
@@ -102,6 +104,10 @@ class GameActions():
     def game_engine(self, game_engine : GameEngine):
         verifier.verify_type(game_engine, GameEngine, "game_engine")
         self._game_engine = game_engine
+    
+    def transport_player_to_sublocation(self, sublocation_path : str) -> None:
+        self.world_state.player.location = sublocation_path
+        self.sync_engine_location_to_player_location()
     
     def move_time_forward_by_ticks(self, ticks : int) -> None:
         verifier.verify_non_negative(ticks, "ticks")
@@ -170,6 +176,10 @@ class GameActions():
         if not sublocation_path[0].strip() in self.world_state.maps:
             self.resolve_map(sublocation_path[0].strip())
         return self.world_state.maps[sublocation_path[0]].locations[sublocation_path[1]].sub_locations[sublocation_path[2]]
+    
+    def set_current_entity_interaction_with_id(self, interaction : str) -> None:
+        if self.game_engine.state == "interaction":
+            self.game_engine.current_interaction.npc.interaction = self.interaction_loader.get(interaction_id = interaction)
     
     def change_entity_interaction_with_id(self, entity_location : str, entity_id : str, interaction_id : str) -> None:
         verifier.verify_type(entity_location, str, "entity_location")
@@ -392,7 +402,6 @@ class GameActions():
                 self.handle_results(results = conditional.other_wise)
     
     def get_current_time_id(self) -> int:
-        print(self.world_state.world_time.to_world_timestamp().get_time_id())
         return self.world_state.world_time.to_world_timestamp().get_time_id()
     
     def handle_unpacked_conditional_dict(self, condition : str, then : list[dict], other_wise : list[dict]) -> None:

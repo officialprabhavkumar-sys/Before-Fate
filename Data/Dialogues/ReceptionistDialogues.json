@@ -1,0 +1,69 @@
+{
+    "__receptionist_interview_question__" : 
+    {
+        "text" : "Ask about your interview scheduled for today.",
+        "result" : 
+        [
+            {
+
+                "type" : "output_with_pauses",
+                "args" : 
+                {
+                    "output" : 
+                    [
+                        {"text" : "Ah yes, you must be the last applicant.", "tag" : "npc"},
+                        {"text" : "I am sorry to say but the interview has already concluded and you have missed your chance.", "tag" : "npc"},
+                        {"text" : "You were scheduled for 8:30 and you are late. Our boss is very strict about punctuality.", "tag" : "npc"}
+                    ],
+                    "pause" : 25,
+                    "tick_based" : true
+                }
+            },
+            {
+                "type" : "schedule_result_by_engine_tick",
+                "args" :
+                {
+                    "tick_offset" : 76,
+                    "result" : 
+                    {
+                        "type" : "set_quest_flag",
+                        "args" : 
+                        {
+                            "quest_id" : "__default_beginning_interview_quest__",
+                            "flag" : "talked_with_receptionist",
+                            "value" : true
+                        }
+                    }
+                }
+            },
+            {
+                "type" : "set_current_entity_interaction_with_id",
+                "args" : 
+                {
+                    "interaction_id" : "__receptionist_interview_question_followup_interaction__"
+                }
+            }
+        ]
+    },
+    "__receptionist_interview_question_followup__" : 
+    {
+        "text" : "Ask if there is really nothing that can be done about the interview.",
+        "result" : 
+        [
+            {
+
+                "type" : "output_with_pauses",
+                "args" : 
+                {
+                    "output" : 
+                    [
+                        {"text" : "I am sorry, there is really nothing I can do.", "tag" : "npc"},
+                        {"text" : "I only work here and the boss is the one who decides whether to take an interview or not.", "tag" : "npc"}
+                    ],
+                    "pause" : 25,
+                    "tick_based" : true
+                }
+            }
+        ]
+    }
+}
