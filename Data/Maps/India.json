@@ -139,6 +139,82 @@
                     }
                 }
             }
+        },
+        "Jaipur" :
+        {
+            "description" : "",
+            "tags" : [],
+            "sub_locations" :
+            {
+                "FateCreations Jaipur Branch" :
+                {
+                    "description" : "You are in Fatecreations Jaipur Branch building.",
+                    "tags" : ["small"],
+                    "inventory" : 
+                    {
+                        "tables" : {
+                            "static" : [],
+                            "dynamic" : []
+                        },
+                        "spawn" : 
+                        {
+                            "instanced" : [],
+                            "stacked" : []
+                        },
+                        "load" : 
+                        {
+                            "instanced" : [],
+                            "stacked" : []
+                        }
+                    },
+                    "entities" :
+                    {
+                        "spawn" : {},
+                        "load" : []
+                    },
+                    "location_events" :
+                    [
+                        
+                    ],
+                    "exits" : 
+                    {
+                        "Jaipur Street" : "India/Jaipur/Street"
+                    }
+                },
+
+                "Street" :
+                {
+                    "description" : "You are standing on a busy street in Jaipur. The sounds of honking cars and chattering people fill the air.",
+                    "tags" : ["large"],
+                    "inventory" : 
+                    {
+                        "tables" : {
+                            "static" : [],
+                            "dynamic" : []
+                        },
+                        "spawn" : 
+                        {
+                            "instanced" : [],
+                            "stacked" : []
+                        },
+                        "load" : 
+                        {
+                            "instanced" : [],
+                            "stacked" : []
+                        }
+                    },
+                    "entities" :
+                    {
+                        "spawn" : {"GeneralHuman" : {"general_person_1" : 3}},
+                        "load" : []
+                    },
+                    "location_events" : [],
+                    "exits" : 
+                    {
+                        "FateCreations Jaipur Branch" : "India/Jaipur/FateCreations Jaipur Branch"
+                    }
+                }
+            }
         }
     }
 }

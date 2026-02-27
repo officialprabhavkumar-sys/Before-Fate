@@ -186,7 +186,7 @@
     },
     "__default_beginning_quest_interview_second_chance__" :
     {
-        "description" : "Go to Jaipur for your second chance at the interview.",
+        "description" : "Go to the location mentioned in the Interview Location Document for your second chance at the interview.",
         "on_entry" : [],
         "success_conditions" :
         [

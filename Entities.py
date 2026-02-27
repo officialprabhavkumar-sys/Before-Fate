@@ -188,9 +188,12 @@ class EntityLoader():
         
         registry = {}
         
+        print("[EntitySystem] Initializing entities...")
+        
         for config in configs:
             if config == "__player__.json":
                 continue
+            print(f"[EntitySystem] Initializing entities from {config}...")
             with open(f"{path}/{config}") as config:
                 config = json.load(config)
                 entity_type = config["meta"]["entity_type"]

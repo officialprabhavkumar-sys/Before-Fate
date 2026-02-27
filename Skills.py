@@ -53,7 +53,7 @@ class SkillState():
                 skills = {}
                 for skill in data[attribute]:
                     skills[skill] = SkillsLoader
-                setattr(self, attribute, skill_loader.get(skill))
+                    setattr(self, attribute, skill_loader.get(skill))
             setattr(self, attribute, data[attribute])
     
     def get(self, attribute : str, interpreter : Interpreter) -> int | float:
@@ -110,7 +110,11 @@ class SkillsLoader():
     def initialize_skills(self, path : str) -> None:
         skills = {}
         verifier.verify_is_dir(path, "path")
+        
+        print("[SkillSystem] Loading skills...")
+        
         for config in os.listdir(path):
+            print(f"[SkillSystem] Loading skills from {config}...")
             with open(f"{path}/{config}", "r") as config:
                 config = json.load(config)
                 for skill_name in config:

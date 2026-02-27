@@ -1527,7 +1527,7 @@ class GameActions():
         player.quest_manager.load(player_data["quest_manager"])
         player.location = player_data["location"]
         if "skills" in player_data:
-            player.skills.load(player_data["skills"])
+            player.skills.load(player_data["skills"], self.skills_loader)
         return player
     
     def get_default_player(self) -> Player:

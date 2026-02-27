@@ -67,7 +67,11 @@ class TablesLoader():
         verifier.verify_list_contains_items(os.listdir(path), tables_required)
         
         all_tables = {}
+        
+        print("[TableSystem] Loading tables...")
+        
         for table_dir in tables_required:
+            print(f"[TableSystem] Loading tables from" + table_dir + "...")
             all_tables[tables_name_mapping[table_dir]] = {}
             tables = os.listdir(f"{path}/{table_dir}")
             for table_name in tables:

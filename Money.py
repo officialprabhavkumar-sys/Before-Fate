@@ -104,7 +104,10 @@ class CurrencyLoader():
         
         currencies = {}
         
+        print("[CurrencySystem] Initializing currencies...")
+        
         for config in configs:
+            print(f"[CurrencySystem] Loading currencies from {config}...")
             with open(f"{path}/{config}") as config:
                 config = json.load(config)
                 for currency_name in config.keys():

@@ -7,6 +7,9 @@ class NamesLoader(object):
         self.initialize_names(path = path)
     
     def initialize_names(self, path : str):
+        
+        print("[Init] Initializing names...")
+        
         with open(path, encoding = "utf-8") as names_file:
             self.names = list(set(names_file.readlines()))
     

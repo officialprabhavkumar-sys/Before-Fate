@@ -117,7 +117,10 @@ class ItemsLoader():
         
         default_items = {}
         
+        print("[ItemsSystem] Loading default items...")
+        
         for config in configs:
+            print(f"[ItemsSystem] Loading default items from {config}...")
             verifier.verify_contains_str(config.split(".")[-1], "json", "config")
             with open(f"{path}/{config}") as config:
                 config = json.load(config)

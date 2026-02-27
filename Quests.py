@@ -98,7 +98,11 @@ class QuestLoader():
         verifier.verify_is_dir(path, "path")
         configs = os.listdir(f"{path}/QuestStages")
         quest_stages = {}
+        
+        print("[QuestSystem] Loading quest stages...")
+        
         for config in configs:
+            print(f"[QuestSystem] Loading quest stages from {config}...")
             with open(f"{path}/QuestStages/{config}") as config:
                 config = json.load(config)
                 for quest_stage_id in config.keys():
@@ -130,7 +134,11 @@ class QuestLoader():
         quests = {}
         
         configs = os.listdir(f"{path}/Quests")
+        
+        print("[QuestSystem] Loading quests...")
+        
         for config in configs:
+            print(f"[QuestSystem] Loading quests from {config}...")
             with open(f"{path}/Quests/{config}") as config:
                 config = json.load(config)
                 for quest_id in config.keys():

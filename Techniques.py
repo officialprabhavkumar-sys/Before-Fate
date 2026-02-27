@@ -161,7 +161,10 @@ class TechniqueLoader():
         
         techniques = {}
         
+        print("[TechniqueSystem] Loading techniques...")
+        
         for config in os.listdir(path):
+            print(f"[TechniqueSystem] Loading techniques from {config}...")
             with open(f"{path}/{config}") as config:
                 config = json.load(config)
                 technique_name = config["name"]

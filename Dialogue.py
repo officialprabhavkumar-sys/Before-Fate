@@ -47,7 +47,10 @@ class DialogueLoader():
         
         dialogues = {}
         
+        print("Loading dialogues...")
+        
         for config in configs:
+            print("Loading dialogues from " + config + "...")
             with open(f"{path}/{config}") as config:
                 config = json.load(config)
                 for dialogue_id in config.keys():
@@ -79,7 +82,10 @@ class InteractionLoader():
         
         interactions = {}
         
+        print("[DialogueSystem] Initializing interactions...")
+        
         for config in configs:
+            print(f"[DialogueSystem] Initializing interactions from {config}...")
             with open(f"{path}/{config}") as config:
                 config = json.load(config)
                 for interaction_id in config.keys():

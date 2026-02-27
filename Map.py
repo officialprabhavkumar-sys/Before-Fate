@@ -144,7 +144,11 @@ class MapLoader():
         verifier.verify_is_dir(path, "path")
         configs = os.listdir(path)
         map_configs = {}
+        
+        print("[MapSystem] Initializing maps...")
+        
         for config in configs:
+            print(f"[MapSystem] Initializing map from {config}...")
             with open(f"{path}/{config}") as config:
                 config = json.load(config)
                 map_configs[config["name"]] = config

@@ -20,7 +20,7 @@
                             {"text" : "FateCreations Interview Acceptance Letter.", "tag" : "info"},
                             {"text" : "Congratulations, You have been selected for another interview at FateCreations", "tag" : "info"},
                             {"text" : "The interview will be held in Jaipur at the following location: ", "tag" : "info"},
-                            {"text" : "FateCreations Depot, Jaipur, India", "tag" : "info"}
+                            {"text" : "FateCreations Jaipur Branch, Jaipur, India", "tag" : "info"}
                         ],
                         "pause" : 5,
                         "tick_based" : true

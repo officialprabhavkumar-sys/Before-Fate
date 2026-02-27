@@ -128,7 +128,11 @@ class CultivationLoader():
     def initialize_configs(self, path : str):
         
         config_files = {}
+        
+        print("[CultivationSystem] Loading cultivation configuration files...")
+        
         for necessary_config_file in CultivationLoader.necessary_config_files:
+            print(f"[CultivationSystem] Loading cultivation configuration from {necessary_config_file}...")
             with open(f"{path}/{necessary_config_file}") as config_file:
                 config_file = json.load(config_file)
                 config_files[necessary_config_file.split(".")[0]] = config_file
@@ -269,10 +273,3 @@ class CultivationCreator():
                     setattr(cultivation_obj, attribute_key, cultivation_data[cultivation_name][attribute_key])
             setattr(cultivation, cultivation_name, cultivation_obj)
         return cultivation
-    
-path = "Data/Cultivation"
-
-cultivation_loader = CultivationLoader(path)
-registry = cultivation_loader.registry
-cultivation_calculator = CultivationCalculator(registry)
-cultivation_creator = CultivationCreator(registry = registry, calculator = cultivation_calculator)

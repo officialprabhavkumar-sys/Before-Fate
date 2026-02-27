@@ -122,23 +122,23 @@ class QuestConditional():
     def __init__(self, quest_id : str | None = None, tag : str | None = None, condition : list[str] | None = None, then : list[dict] | None = None):
         self.quest_id = verifier.verify_type(quest_id, str, "quest_id") or ""
         self.tag = verifier.verify_type(tag, str, "tag") or "" #there should only be two tags here : success or fail.
-        self.conditions = verifier.verify_type(condition, list, "condition", True) or ""
+        self.conditions = verifier.verify_type(condition, list, "condition", True) or []
         self.then = verifier.verify_type(then, list, "then", True) or []
     
-    def to_dict(self) -> dict[str : list[str], str : list[dict]]:
-        return {"quest_id" : self.quest_id, "tag" : self.tag, "conditions" : self.conditions, "then" : self.then}
+    def to_dict(self) -> dict[str, list[str] | str | list[dict]]:
+        return {"quest_id" : self.quest_id, "tag" : self.tag, "condition" : self.conditions, "then" : self.then}
     
     def load(self, data : dict) -> None:
         self.quest_id = verifier.verify_type(data["quest_id"], str, "quest_id")
         self.tag = verifier.verify_type(data["tag"], str, "tag")
-        self.conditions = verifier.verify_type(data["conditions"], list, "conditions")
+        self.conditions = verifier.verify_type(data["condition"], list, "condition")
         self.then = verifier.verify_type(data["then"], list, "then")
     
 class QuestConditionPool():
     def __init__(self, interpreter : Interpreter):
         verifier.verify_type(interpreter, Interpreter, "interpreter")
         self.interpreter = interpreter
-        self.quest_conditionals : dict[str : QuestConditional] = {}
+        self.quest_conditionals : dict[str, QuestConditional] = {}
     
     def pop_satisfied_results(self) -> list[list[dict]]:
         MAPPING = {"success" : "fail", "fail" : "success"}
@@ -174,7 +174,9 @@ class QuestConditionPool():
         return {quest_conditional_pool_tag : self.quest_conditionals[quest_conditional_pool_tag].to_dict() for quest_conditional_pool_tag in self.quest_conditionals.keys()}
 
     def load(self, data : dict) -> None:
+        print("[QuestSystem] Loading quest conditionals...")
         for quest_conditional_pool_tag in data.keys():
+            print(f"[QuestSystem] Loading quest conditional \"{quest_conditional_pool_tag}\"...")
             self.quest_conditionals[quest_conditional_pool_tag] = QuestConditional(**data[quest_conditional_pool_tag])
     
     def flush(self) -> None:
