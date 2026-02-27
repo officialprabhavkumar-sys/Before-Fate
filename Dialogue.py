@@ -47,10 +47,10 @@ class DialogueLoader():
         
         dialogues = {}
         
-        print("Loading dialogues...")
+        print("[DialogueSystem] Loading dialogues...")
         
         for config in configs:
-            print("Loading dialogues from " + config + "...")
+            print(f"[DialogueSystem] Loading dialogues from {config}...")
             with open(f"{path}/{config}") as config:
                 config = json.load(config)
                 for dialogue_id in config.keys():
