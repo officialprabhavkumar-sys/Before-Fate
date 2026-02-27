@@ -414,7 +414,11 @@ class EntityLoader():
         entity_stamina = entity_data["stamina"]
         entity_inventory = self.resolve_inventory(entity_data["inventory"])
         entity_is_alive = entity_data["is_alive"]
-        entity : Entity = entity_class(name = entity_name, id = entity_id, cultivation = entity_cultivation, hp = entity_hp, stamina = entity_stamina, stats = entity_stats)
+        if "description" in entity_data:
+            entity_description = entity_data["description"]
+            entity : Entity = entity_class(name = entity_name, id = entity_id, cultivation = entity_cultivation, hp = entity_hp, stamina = entity_stamina, stats = entity_stats, description = entity_description)
+        else:
+            entity : Entity = entity_class(name = entity_name, id = entity_id, cultivation = entity_cultivation, hp = entity_hp, stamina = entity_stamina, stats = entity_stats)
         entity.inventory = entity_inventory
         entity.is_alive = entity_is_alive
         entity.tags = entity_data["tags"]

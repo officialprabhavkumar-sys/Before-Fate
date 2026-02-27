@@ -52,9 +52,10 @@ class SkillState():
             if attribute in ["static_skills", "dynamic_skills"]:
                 skills = {}
                 for skill in data[attribute]:
-                    skills[skill] = SkillsLoader
-                    setattr(self, attribute, skill_loader.get(skill))
-            setattr(self, attribute, data[attribute])
+                    skills[skill] = skill_loader.get(skill)
+                setattr(self, attribute, skills)
+            else:
+                setattr(self, attribute, data[attribute])
     
     def get(self, attribute : str, interpreter : Interpreter) -> int | float:
         attribute = attribute.strip().lower()
