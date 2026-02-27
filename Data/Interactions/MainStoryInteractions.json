@@ -13,5 +13,22 @@
         "text" : "Welcome to FateCreations! How can I assist you today?",
         "dialogues" : ["__receptionist_interview_question_followup__"],
         "exitable" : true
+    },
+    "__recruiter_agent_interaction_1__" :
+    {
+        "text" : "Hey, are you the one that applied for the job at FateCreations?",
+        "dialogues" : [
+            "__recruiter_introduction__",
+            "__recruiter_question_about_intent__"
+        ],
+        "exitable" : true
+    },
+    "__recruiter_agent_interaction_2__" :
+    {
+        "text" : "So, what do you say? Would you like to work with us at FateCreations?",
+        "dialogues" : [
+            "__recruiter_question_about_intent_followup__"
+        ],
+        "exitable" : true
     }
 }

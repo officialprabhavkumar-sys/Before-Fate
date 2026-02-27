@@ -3,7 +3,7 @@
     {
         "name" : "The Interview",
         "description" : "You have an interview at one of the biggest companies in India, 'FateCreations'. ",
-        "stages" : ["__default_beginning_quest_interview_1__", "__default_beginning_quest_interview_2__"],
+        "stages" : ["__default_beginning_quest_interview_1__", "__default_beginning_quest_interview_2__", "__default_beginning_quest_interview_3__", "__default_beginning_quest_recruiter_talk__", "__default_beginning_quest_interview_second_chance__"],
         "__start__" : "__default_beginning_quest_interview_1__"
     }
 }

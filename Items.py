@@ -46,10 +46,11 @@ class Stack():
         return item_data
 
 class Consumable(Item):
-    def __init__(self, name : str, id : str, weight : int | float = 0, effects : dict | None = None, description : str = "Consumable."):
+    def __init__(self, name : str, id : str, weight : int | float = 0, effects : list | None = None, one_time_use : bool = True, description : str = "Consumable."):
         super().__init__(name = name, id = id, weight = weight, stackable = True, description = description)
-        self.effects : dict = verifier.verify_type(effects, dict, "effects", True) or []
+        self.effects : list = verifier.verify_type(effects, list, "effects", True) or []
         self.requirements : list[str] = []
+        self.one_time_use : bool = one_time_use
 
 #Discontinued Ammo class for now.
 # class Ammo(Item):

@@ -24,7 +24,7 @@ if TYPE_CHECKING:
 class Entity():
     def __init__(self, name : str, id : str, cultivation : Cultivation, stats : Stats, hp : int | float, stamina : int | float, description : str = "You don't quite grasp what you are looking at."):
         self.name = verifier.verify_type(name, str, "name")
-        self.id = verifier.verify_type(id, str, "id")
+        self.id : str = verifier.verify_type(id, str, "id")
         self.cultivation : Cultivation = verifier.verify_type(cultivation, Cultivation, "cultivation")
         self.stats : Stats = verifier.verify_type(stats, Stats, "stats")
         self.hp = verifier.verify_non_negative(hp, "hp")
@@ -32,7 +32,7 @@ class Entity():
         self.inventory = Inventory(50)
         self.description = verifier.verify_type(description, str, "description")
         self.is_alive = True
-        self.tags = ["Beast", ]
+        self.tags = []
     
     def to_dict(self) -> dict:
         entity_data = {"entity_type" : type(self).__name__}
@@ -59,7 +59,12 @@ class Entity():
     
     def damage(self) -> DamagePacket:
         return DamagePacket(crush = self.stats.combat_stats.strength)
-    
+
+class Beast(Entity):
+    def __init__(self, name : str, id : str, cultivation : Cultivation, hp : int | float, stamina : int | float, stats : Stats, description : str = "A beast."):
+        super().__init__(name = name, id = id, cultivation = cultivation, hp = hp, stamina = stamina, stats = stats, description = description)
+        self.tags = ["Beast", ]
+
 class Human(Entity):
     def __init__(self, name : str, id : str, cultivation : Cultivation, hp : int | float, stamina : int | float, stats : Stats, description : str = "An ordinary looking person."):
         super().__init__(name = name, id = id, cultivation = cultivation, hp = hp, stamina = stamina, stats = stats, description = description)

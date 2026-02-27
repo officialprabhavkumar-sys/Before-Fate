@@ -1,0 +1,8 @@
+{
+    "__default_receptionist_null_interaction__":
+    {
+        "text" : "The receptionist is busy with their work and pays you no attention.",
+        "dialogues" : [],
+        "exitable" : true
+    }
+}

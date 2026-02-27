@@ -1,0 +1,108 @@
+{
+    "__recruiter_introduction__" : 
+    {
+        "text" : "Ask who they are and how they know that.",
+        "result" : 
+        [
+            {
+                "type" : "output_with_pauses",
+                "args" : 
+                {
+                    "output" : 
+                    [
+                        {"text" : "Oh, my apologies!", "tag" : "npc"},
+                        {"text" : "I'm Alex, a recruiter at FateCreations.", "tag" : "npc"}
+                    ]
+                }
+            }
+        ]
+    },
+    "__recruiter_question_about_intent__" : 
+    {
+        "text" : "Ask what he wants from you.",
+        "result" :
+        [
+            {
+                "type" : "output_with_pauses",
+                "args" :
+                {
+                    "output" :
+                    [
+                        {"text" : "Well, you see I am the one that deals with potential candidates for job openings here at FateCreations.", "tag" : "npc"},
+                        {"text" : "I am the one that approved your application for the job interview.", "tag" : "npc"},
+                        {"text" : "I am aware of what happened with the receptionist earlier.", "tag" : "npc"},
+                        {"text" : "Our boss is very strict about structure and order here.", "tag" : "npc"},
+                        {"text" : "Your portfolio is quite impressive. Although I couldn't convince the boss to let you take the interview since you were late, I would really like to work with you.", "tag" : "npc"},
+                        {"text" : "Although our boss is very particular about following rules he also appreciates effort. If you can prove to him that you are serious about working here, I am sure he will reconsider.", "tag" : "npc"}
+                    ]
+                },
+                "pause" : 25,
+                "tick_based" : true
+            },
+            {
+                "type" : "interaction_goto",
+                "args" :
+                {
+                    "interaction_id" : "__recruiter_agent_interaction_2__"
+                }
+            }
+        ]
+    },
+    "__recruiter_question_about_intent_followup__" :
+    {
+        "text" : "Ask how you can prove that you are serious about working at FateCreations.",
+        "result" :
+        [
+            {
+                "type" : "output_with_pauses",
+                "args" :
+                {
+                    "output" :
+                    [
+                        {"text" : "It's simple really. We sometimes give candidates another chance every year on the day the company was founded. Which just so happens to be today.", "tag" : "npc"},
+                        {"text" : "Though that interview doesn't happen here.", "tag" : "npc"},
+                        {"text" : "It is arranged at this location in Jaipur.", "tag" : "npc"},
+                        {"text" : "Alex hands you a document with the address.", "tag" : "narrator"},
+                        {"text" : "I hope you will be there on time this time around!", "tag" : "npc"}
+                    ]
+                },
+                "pause" : 25,
+                "tick_based" : true
+            },
+            {
+                "type" : "schedule_result_by_engine_tick",
+                "args" :
+                {
+                    "tick_offset" : 126,
+                    "result" :
+                    {
+                        "type" : "set_quest_flag",
+                        "args" :
+                        {
+                            "quest_id" : "__default_beginning_interview_quest__",
+                            "flag_name" : "talked_with_recruiter",
+                            "value" : true
+                        }
+                    }
+                }
+            },
+            {
+                "type" : "schedule_result_by_engine_tick",
+                "args" :
+                {
+                    "tick_offset" : 101,
+                    "result" :
+                    {
+                        "type" : "give_item_to_player",
+                        "args" :
+                        {
+                            "item_type" : "Consumable",
+                            "item_name" : "Interview Location Document",
+                            "amount" : 1
+                        }
+                    }
+                }
+            }
+        ]
+    }
+}

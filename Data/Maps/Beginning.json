@@ -51,8 +51,10 @@
                                     {"text" : "First of all, Welcome to Before Fate.", "tag" : "narrator"}, 
                                     {"text" : "I'm glad to see someone here.", "tag" : "narrator"}, 
                                     {"text" : "You might be wondering who I am, or maybe not. But Ill tell you anyway. I am the narrator.", "tag" : "narrator"}, 
-                                    {"text" : "Don't worry, this is an open world game, you only have to bear with me for a short while...for now.", "tag" : "narrator"},
-                                    {"text" : "How about you start by looking around a bit? Try out the \"look\" command.", "tag" : "narrator"}
+                                    {"text" : "Or atleast that's what all the others call me.", "tag" : "narrator"},
+                                    {"text" : "Don't worry, you only have to bear with me for a short while...for now.", "tag" : "narrator"},
+                                    {"text" : "How about you start by looking around a bit? Try out the \"look\" command.", "tag" : "narrator"},
+                                    {"text" : "Oh, and one more thing. If you ever get stuck, just type \"help\" to get some assistance.", "tag" : "narrator"}
                                 ], 
                                 "pause" : 25, 
                                 "tick_based" : true
@@ -63,8 +65,8 @@
                             "args" : 
                             {
                                 "entity_type" : "Narrator", 
-                                "entity_template_name" : "__narrator__", 
-                                "entity_id" : "__narrator_1__", 
+                                "entity_template_name" : "__narrator_1__", 
+                                "entity_id" : "__narrator_1_instance_1__", 
                                 "sublocation" : "Unknown Map/Unknown Region/Unknown Location"
                             }
                         }

@@ -36,7 +36,7 @@
                                     {"text" : "Excuse me, that was not supposed to happen. I only have a little power left but I suppose it should be enough.", "tag" : "narrator"},
                                     {"text" : "The world around you shifts very slightly. You blink and you find yourself outside of the building again.", "tag" : "narrator"},
                                     {"text" : "What is happening to you today? Are you hallucinating? You think to yourself.", "tag" : "narrator"},
-                                    {"text" : "Anyhow, you should head into the building for your interview and talk with the receptionist. You think to yourself.", "tag" : "narrator"}
+                                    {"text" : "Anyhow, you should head into the building for your interview and talk with the receptionist.", "tag" : "narrator"}
                                 ],
                                 "pause" : 25,
                                 "tick_based" : true
@@ -103,6 +103,111 @@
         "description" : "You should talk with the receptionist.",
         "on_entry" : [],
         "success_conditions" : ["@quest_flag_is_true{|quest_id| = |__default_beginning_interview_quest__|, |flag| = |talked_with_receptionist|}"],
-        "success_result" : []
+        "success_result" : 
+        [
+            {
+                "type" : "set_quest_stage",
+                "args" : 
+                {
+                    "quest_id" : "__default_beginning_interview_quest__",
+                    "stage_id" : "__default_beginning_quest_interview_3__"
+                }
+            }
+        ]
+    },
+    "__default_beginning_quest_interview_3__" : 
+    {
+        "description" : "Leave FateCreations building.",
+        "on_entry" : [],
+        "success_conditions" : [
+            "@player_location_is{|location| = |India/New Delhi/Street|}"
+        ],
+        "success_result" : 
+        [
+            {
+                "type" : "spawn_entity_with_id", 
+                "args" : 
+                {
+                    "entity_type" : "GeneralHuman", 
+                    "entity_template_name" : "__story_recruiter_agent_1__", 
+                    "entity_id" : "__recruiter_agent_1__", 
+                    "sublocation" : "India/New Delhi/Street"
+                }
+            },
+            {
+                "type" : "output_with_pauses",
+                "args" : 
+                {
+                    "output" : 
+                    [
+                        {"text" : "As you step outside the building, you are greeted by a friendly face.", "tag" : "narrator"},
+                        {"text" : "Would you have a moment to talk?", "tag" : "npc"}
+                    ],
+                    "pause" : 20,
+                    "tick_based" : true
+                }
+            },
+            {
+                "type" : "schedule_result_by_engine_tick",
+                "args" :
+                {
+                    "result" : 
+                    {
+                        "type" : "set_quest_stage",
+                        "args" : 
+                        {
+                            "quest_id" : "__default_beginning_interview_quest__",
+                            "stage_id" : "__default_beginning_quest_recruiter_talk__"
+                        }
+                    },
+                    "tick_offset" : 51
+                }
+            }
+        ]
+    },
+    "__default_beginning_quest_recruiter_talk__" : 
+    {
+        "description" : "Talk with the man outside FateCreations building.",
+        "on_entry" : [],
+        "success_conditions" : [
+            "@quest_flag_is_true{|quest_id| = |__default_beginning_interview_quest__|, |flag| = |talked_with_recruiter|}"
+        ],
+        "success_result" : 
+        [
+            {
+                "type" : "set_quest_stage",
+                "args" :
+                {
+                    "quest_id" : "__default_beginning_interview_quest__",
+                    "stage_id" : "__default_beginning_quest_interview_second_chance__"
+                }
+            }
+        ]
+    },
+    "__default_beginning_quest_interview_second_chance__" :
+    {
+        "description" : "Go to Jaipur for your second chance at the interview.",
+        "on_entry" : [],
+        "success_conditions" :
+        [
+            "@player_location_is{|location| = |India/Jaipur/InterviewLocation|}"
+        ],
+        "success_result" :
+        [
+            {
+                "type" : "output_with_pauses",
+                "args" :
+                {
+                    "output" :
+                    [
+                        {"text" : "This is about as far as the game has been written.", "tag" : "success"},
+                        {"text" : "Please be sure to tell me about your experience playing this game thus far!", "tag" : "success"},
+                        {"text" : "I hope you enjoyed it!", "tag" : "success"}
+                    ],
+                    "pause" : 25,
+                    "tick_based" : true
+                }
+            }
+        ]
     }
 }

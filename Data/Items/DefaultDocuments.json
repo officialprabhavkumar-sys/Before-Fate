@@ -1,0 +1,33 @@
+{
+    "meta" :
+    {
+        "item_type" : "Consumable"
+    },
+    "templates" :
+    {
+        "Interview Location Document" :
+        {
+            "description" : "A document provided by a recruiter at FateCreations. It contains the address for your rescheduled interview in Jaipur.",
+            "effects" : 
+            [
+                {
+                    "type" : "output_with_pauses",
+                    "args" :
+
+                    {
+                        "output" :
+                        [
+                            {"text" : "FateCreations Interview Acceptance Letter.", "tag" : "info"},
+                            {"text" : "Congratulations, You have been selected for another interview at FateCreations", "tag" : "info"},
+                            {"text" : "The interview will be held in Jaipur at the following location: ", "tag" : "info"},
+                            {"text" : "FateCreations Depot, Jaipur, India", "tag" : "info"}
+                        ],
+                        "pause" : 5,
+                        "tick_based" : true
+                    }
+                }
+            ],
+            "one_time_use" : false
+        }
+    }
+}

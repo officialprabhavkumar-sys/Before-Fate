@@ -63,6 +63,21 @@
                     "pause" : 25,
                     "tick_based" : true
                 }
+            },
+            {
+                "type" : "schedule_result_by_engine_tick",
+                "args" :
+                {
+                    "tick_offset" : 51,
+                    "result" : 
+                    {
+                        "type" : "set_current_entity_interaction_with_id",
+                        "args" : 
+                        {
+                            "interaction_id" : "__default_receptionist_null_interaction__"
+                        }
+                    }
+                }
             }
         ]
     }

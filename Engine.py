@@ -177,16 +177,16 @@ class GameActions():
             self.resolve_map(sublocation_path[0].strip())
         return self.world_state.maps[sublocation_path[0]].locations[sublocation_path[1]].sub_locations[sublocation_path[2]]
     
-    def set_current_entity_interaction_with_id(self, interaction : str) -> None:
+    def set_current_entity_interaction_with_id(self, interaction_id : str) -> None:
         if self.game_engine.state == "interaction":
-            self.game_engine.current_interaction.npc.interaction = self.interaction_loader.get(interaction_id = interaction)
+            self.game_engine.current_interaction.npc.interaction = interaction_id
     
     def change_entity_interaction_with_id(self, entity_location : str, entity_id : str, interaction_id : str) -> None:
         verifier.verify_type(entity_location, str, "entity_location")
         verifier.verify_type(entity_id, str, "entity_id")
         verifier.verify_type(interaction_id, str, "interaction_id")
         sub_location = self.get_sublocation_from_path(sublocation_path = entity_location)
-        sub_location.entities[entity_id].interaction = self.interaction_loader.get(interaction_id = interaction_id)
+        sub_location.entities[entity_id].interaction = interaction_id
     
     def display_interaction(self, interaction : Interaction) -> None:
         self.output(text = interaction.text, tag = "npc")
@@ -377,10 +377,10 @@ class GameActions():
         return command_used.strip().lower() in str(self.game_engine.last_command).strip().lower()
     
     def clear_game_output(self) -> None:
-        self.ui_engine.game_output.clear()
+        self.ui_engine.clear_output_signal.emit("game")
     
     def clear_mainmenu_output(self) -> None:
-        self.ui_engine.mainmenu_output.clear()
+        self.ui_engine.clear_output_signal.emit("mainmenu")
     
     def handle_result(self, result : dict) -> None:
         self.result_functions_mapping[result["type"]](**result["args"])
@@ -466,10 +466,12 @@ class GameActions():
         return self.inventory_contains_item(inventory = player_inventory, item_type = item_type, item_name = item_name, amount = amount)
     
     def give_item(self, item_type : str, item_name : str, amount : int) -> bool:
+        self.output(f"Item added : {item_name} x {amount}", "loot")
         self.give_item_to_inventory(item_type = item_type, item_name = item_name, amount = amount, inventory = self.world_state.player.inventory)
         return True
     
     def remove_item(self, item_type : str, item_name : str, amount : int) -> bool:
+        self.output(f"Item removed : {item_name} x {amount}", "defeat")
         return self.remove_item_from_inventory(item_type = item_type, item_name = item_name, amount = amount, inventory = self.world_state.player.inventory, give_error = False)
 
     def player_has_money(self, currency_name : str, amount : int) -> bool:
@@ -493,7 +495,11 @@ class GameActions():
         self.set_quest_flag(quest_id = quest_id, flag = "completed", value = False)
         self.world_state.quest_condition_pool.flush()
         self.world_state.player.quest_manager.add_all_quest_conditionals_to_pool(quest_loader = self.quest_loader, quest_condition_pool = self.world_state.quest_condition_pool)
-        self.output(text = f"New Quest Started : {self.get_quest(quest_id).name}", tag = "quest")
+        quest = self.get_quest(quest_id)
+        quest_state = self.world_state.player.quest_manager.quest_states[quest_id]
+        quest_stage = self.quest_loader.get_quest_stage(quest_stage_id = quest_state.stage)
+        self.output(text = f"New Quest Started : {quest.name}", tag = "quest")
+        self.output(text = f"Objective : {quest_stage.description}", tag = "quest")
         
     def set_quest_stage(self, quest_id : str, stage_id : str) -> None:
         quest = self.get_quest(quest_id)
@@ -503,6 +509,8 @@ class GameActions():
         self.world_state.quest_condition_pool.flush()
         self.world_state.player.quest_manager.add_all_quest_conditionals_to_pool(quest_loader = self.quest_loader, quest_condition_pool = self.world_state.quest_condition_pool)
         self.output(text = f"Quest Updated : {quest.name}", tag = "quest_update")
+        quest_stage = self.quest_loader.get_quest_stage(quest_stage_id = quest_state.stage)
+        self.output(text = f"New Objective : {quest_stage.description}", tag = "quest_update")
         
     def remove_quest_conditional_from_pool(self, quest_id : str, tag : Literal["success"] | Literal["fail"]) -> None:
         self.world_state.quest_condition_pool.remove_quest_conditional(f"{quest_id}_{tag}")
@@ -604,10 +612,12 @@ class GameActions():
         self.ui_engine.update_box_signal.emit("effects", data)
         
     def set_state_to_game(self) -> None:
+        self.clear_game_output()
         self.game_engine.state = "game"
         self.ui_engine.switch_page.emit("game")
     
     def set_state_to_mainmenu(self) -> None:
+        self.clear_mainmenu_output()
         self.game_engine.state = "mainmenu"
         self.ui_engine.switch_page.emit("mainmenu")
     
@@ -944,15 +954,6 @@ class GameActions():
         else:
             self.output(f"\"{trade_type}\" is not a valid trade command.", "warning")
             self.output(f"Have you considered writing \"Help\"?", "narrator")
-            
-    def output_interaction_options_and_interaction_text(self, interaction : Interaction) -> None:
-        self.output(interaction.text, "npc")
-        for option_number, dialogue in enumerate(interaction.dialogues.values()):
-            for condition in dialogue.conditions:
-                if not self.interpreter.interpret(condition):
-                    break
-            else:
-                self.output(f"{option_number} : {dialogue.text}", "info")
     
     def start_interaction(self, entity_id : str):
         entity : Entity = self.get_sublocation_from_path(self.world_state.player.location).entities[entity_id]
@@ -1148,10 +1149,10 @@ class GameActions():
             try:
                 entity_id_to_talk_to = int(entity_id_to_talk_to)
             except:
-                self.output(f"No entity by the id \"{entity_id_to_talk_to}\" found. The entity id is the number before the colon \":\" in the look results.", "info")
+                self.output(f"No entity by the id \"{entity_id_to_talk_to}\" found. The entity id is the number before the \")\" in the look results.", "info")
                 return
             if not entity_id_to_talk_to in self.game_engine.temp_entity_id_to_entity_mapping:
-                self.output(f"No entity by the id \"{entity_id_to_talk_to}\" found. The entity id is the number before the colon \":\" in the look results.", "info")
+                self.output(f"No entity by the id \"{entity_id_to_talk_to}\" found. The entity id is the number before the \")\" in the look results.", "info")
                 return
             entity = self.game_engine.temp_entity_id_to_entity_mapping[entity_id_to_talk_to]
             if not entity.id in self.game_engine.current_location.entities:
@@ -1198,7 +1199,6 @@ class GameActions():
             self.game_engine.current_location = sublocation_to_go_to
             self.game_engine.temp_entity_id_to_entity_mapping = None
             self.world_state.player.location = location_to_go_to_path
-            self.handle_look()
             return
         
         elif first_arg == "equip":
@@ -1299,10 +1299,41 @@ class GameActions():
                     self.output("You don't meet the requirements to use that item.", "narrator")
                     return
             self.handle_results(item.effects)
-            self.world_state.player.inventory.remove_stack(stack_name = item.name, amount = 1)
+            if item.one_time_use:
+                self.world_state.player.inventory.remove_stack(stack_name = item.name, amount = 1)
             self.set_player_inventory_mapping()
             return
-        
+        elif first_arg == "observe":
+            if player_input_length == 1:
+                self.output("You take a moment to observe your surroundings carefully.", "narrator")
+                if not self.game_engine.current_location.entities:
+                    self.output("There is nobody around you.", "narrator")
+                    return
+                self.output("You observe the following entities carefully :", "narrator")
+                for i, entity in enumerate(self.game_engine.current_location.entities.values()):
+                    self.output(f"{i + 1}) {entity.description}:", "narrator")
+                    self.output(f"Cultivation :\nPhysical : {entity.cultivation.physical.stage}\nQi : {entity.cultivation.qi.stage}\nSoul : {entity.cultivation.soul.stage}\n******* : {"*" * len(entity.cultivation.essence.stage)}", "narrator")
+                return
+            if player_input_length > 2:
+                self.output("\"observe\" takes at most one argument.", "info")
+                return
+            entity_id_to_observe = player_input[1]
+            try:
+                entity_id_to_observe = int(entity_id_to_observe)
+            except:
+                self.output(f"No entity by the id \"{entity_id_to_observe}\" found. The entity id is the number before the \")\" in the look results.", "info")
+                return
+            if not entity_id_to_observe in self.game_engine.temp_entity_id_to_entity_mapping:
+                self.output(f"No entity by the id \"{entity_id_to_observe}\" found. The entity id is the number before the \")\" in the look results.", "info")
+                return
+            entity = self.game_engine.temp_entity_id_to_entity_mapping[entity_id_to_observe]
+            if not entity.id in self.game_engine.current_location.entities:
+                self.output("They moved to another location before you could observe them.", "info")
+                self.game_engine.temp_entity_id_to_entity_mapping.pop(entity_id_to_observe)
+                return
+            self.output(f"You carefully observe {entity.description}:", "narrator")
+            self.output(f"Cultivation :\nPhysical : {entity.cultivation.physical.stage}\nQi : {entity.cultivation.qi.stage}\nSoul : {entity.cultivation.soul.stage}\n******* : {"*" * len(entity.cultivation.essence.stage)}", "narrator")
+            return
         else:
             self.output(f"What do you mean \"{original_player_input}\"? That's not a valid command. Try using \"Help\" instead.", "narrator")
             return
@@ -1320,6 +1351,7 @@ class GameActions():
         self.output("9) \"unequip\" : Followed by any of the following : (\"weapon\", \"helmet\", \"chestplate\", \"legging\", \"boot\") to unequip the item at in that particular slot.", "info")
         self.output("10) \"quests\" : Followed by \"completed\", \"active\" or \"failed\" to view completed quests, active quests and failed quests respectively.", "info")
         self.output("11) \"use\" : Followed by the item id of the item you want to use. Use \"inventory\" to see item ids.", "info")
+        self.output("12) \"observe\" : To carefully observe your surroundings or a particular entity by following it up with the entity id.", "info")
         
     def process_game_player_input(self) -> None:
         while not self.ui_engine.input_queue.empty():

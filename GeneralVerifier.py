@@ -78,7 +78,7 @@ class GeneralVerifier(object):
             return value
         
         if contains not in value:
-            raise ValueError(f"{name} : \"{item}\" was expected to be in the list \"{value}\".")
+            raise ValueError(f"{name} : \"{contains}\" was expected to be in the list \"{value}\".")
         if return_contains:
             return contains
         return value

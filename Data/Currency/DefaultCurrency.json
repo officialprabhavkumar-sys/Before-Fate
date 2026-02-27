@@ -1,6 +1,4 @@
 {
-    "INR" : {"value" : 1, "world" : "modern", "description" : "Indian Standard Currency."},
-    "Bronze Coin" : {"value" : 1, "world" : "cultivation", "description" : "Bronze Coin."},
-    "Silver Coin" : {"value" : 10, "world" : "cultivation", "description" : "Silver Coin."},
-    "Gold coin" : {"value" : 100, "world" : "cultivation", "description" : "Gold Coin."}
+    "ISC" : {"value" : 1, "description" : "International Standard Currency. Used globally for trade between countries. Made standard after the war of catastrophes of 2070."},
+    "FM" : {"value" : 1, "description" : "Fate Marks. The standard currency of the "}
 }

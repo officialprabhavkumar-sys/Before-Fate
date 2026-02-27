@@ -6,7 +6,7 @@
 
     "templates" : {
 
-        "__narrator__" : {
+        "__narrator_1__" : {
             "cultivation" : {"physical" : {"0" : 1}, "qi" : {"0" : 1}, "soul" : {"0" : 1}},
             "stats" : {
                 "base_stats" :

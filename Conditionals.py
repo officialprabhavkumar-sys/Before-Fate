@@ -1,6 +1,20 @@
 from typing import Any
 from GeneralVerifier import verifier
 
+class Conditional():
+    def __init__(self, condition : str | None = None, then : list[dict] | None = None, other_wise : list[dict] | None = None):
+        self.condition = verifier.verify_type(condition, str, "condition", True) or ""
+        self.then = verifier.verify_type(then, list, "then", True) or []
+        self.other_wise = verifier.verify_type(other_wise, list, "other_wise", True) or []
+
+    def to_dict(self) -> dict[str : str, str : list[dict], str : list[dict]]:
+        return {"condition" : self.condition, "then" : self.then, "other_wise" : self.other_wise}
+    
+    def load(self, data : dict) -> None:
+        self.condition = verifier.verify_type(data["condition"], str, "condition")
+        self.then = verifier.verify_type(data["then"], list, "then")
+        self.other_wise = verifier.verify_type(data["other_wise"], list, "other_wise")
+
 class Interpreter():
     def __init__(self, available_functions_mapping : dict) -> None:
         self.functions = verifier.verify_type(available_functions_mapping, dict, "available_functions_mapping")
@@ -103,20 +117,6 @@ class Interpreter():
             return conditional.then
         else:
             return conditional.other_wise
-    
-class Conditional():
-    def __init__(self, condition : str | None = None, then : list[dict] | None = None, other_wise : list[dict] | None = None):
-        self.condition = verifier.verify_type(condition, str, "condition", True) or ""
-        self.then = verifier.verify_type(then, list, "then", True) or []
-        self.other_wise = verifier.verify_type(other_wise, list, "other_wise", True) or []
-
-    def to_dict(self) -> dict[str : str, str : list[dict], str : list[dict]]:
-        return {"condition" : self.condition, "then" : self.then, "other_wise" : self.other_wise}
-    
-    def load(self, data : dict) -> None:
-        self.condition = verifier.verify_type(data["condition"], str, "condition")
-        self.then = verifier.verify_type(data["then"], list, "then")
-        self.other_wise = verifier.verify_type(data["other_wise"], list, "other_wise")
 
 class QuestConditional():
     def __init__(self, quest_id : str | None = None, tag : str | None = None, condition : list[str] | None = None, then : list[dict] | None = None):

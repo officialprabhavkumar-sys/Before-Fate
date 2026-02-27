@@ -12,7 +12,7 @@
                 "Home" :
                 {
                     "description" : "You are in your house.",
-                    "tags" : [],
+                    "tags" : ["small"],
                     "inventory" : 
                     {
                         "tables" : {
@@ -109,7 +109,7 @@
                 "FateCreations" :
                 {
                     "description" : "You are inside the FateCreations building, one of the biggest companies in India. The modern architecture stands tall against the skyline and the interior is minimal but clean.",
-                    "tags" : [],
+                    "tags" : ["small"],
                     "inventory" : 
                     {
                         "tables" : {

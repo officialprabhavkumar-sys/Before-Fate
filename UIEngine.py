@@ -15,6 +15,7 @@ class UIEngine(QObject):
     switch_page = Signal(str)
     update_box_signal = Signal(str, str)
     scroll_to_bottom_signal = Signal(str)
+    clear_output_signal = Signal(str)
 
     def __init__(self):
         super().__init__()
@@ -31,6 +32,7 @@ class UIEngine(QObject):
         self.switch_page.connect(self.set_page)
         self.update_box_signal.connect(self._update_box)
         self.scroll_to_bottom_signal.connect(self._scroll_to_bottom)
+        self.clear_output_signal.connect(lambda output_name: self._clear_output(output_name))
         self.app.setStyleSheet("""
                             QMainWindow {
                                 background-color: #0f1117;
@@ -191,6 +193,13 @@ class UIEngine(QObject):
         elif box_name in {"game", "interaction", "trade", "combat"}:
             scrollbar = self.game_output.verticalScrollBar()
         QTimer.singleShot(0, lambda: scrollbar.setValue(scrollbar.maximum()))
+    
+    def _clear_output(self, box_name : str) -> None:
+        if box_name == "mainmenu":
+            box = self.mainmenu_output
+        elif box_name in {"game", "interaction", "trade", "combat"}:
+            box = self.game_output
+        box.clear()
     
     def run(self):
     

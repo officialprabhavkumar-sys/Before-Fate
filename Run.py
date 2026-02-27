@@ -10,8 +10,9 @@ def verify_initial():
     items = os.listdir()
     if not "settings.json" in items:
         save_path = "Saves"
+        data_path = "Data"
         with open("settings.json", "w") as settings:
-            json.dump({"save_path" : save_path, "user_macros" : {}, "data_path" : "Data"})
+            json.dump({"save_path" : save_path, "user_macros" : {}, "data_path" : data_path}, settings, indent = 4)
     else:
         with open("settings.json", 'r') as settings:
             settings = json.load(settings)
