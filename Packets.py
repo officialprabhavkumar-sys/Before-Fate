@@ -116,3 +116,7 @@ class ModifierPacketPool():
             if modifier in self.pool:
                 modifier_packets.append(self.pool[modifier])
         return modifier_packets
+    
+    def has_modifier(self, modifier : str) -> bool:
+        return modifier in self.pool
+    

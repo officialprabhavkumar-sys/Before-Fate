@@ -620,6 +620,7 @@ class GameActions():
         self.clear_mainmenu_output()
         self.game_engine.state = "mainmenu"
         self.ui_engine.switch_page.emit("mainmenu")
+        self.output("New Game\nContinue\nLoad Game\nExit", "system")
     
     def load_settings_file(self) -> None:
         with open("settings.json", encoding = "utf-8") as settings_file:

@@ -1,8 +1,10 @@
+from __future__ import annotations
 import math
+from operator import __mul__
 import random
 from typing import TYPE_CHECKING
+from queue import Queue
 
-from GeneralVerifier import verifier
 from Entities import Entity, Player
 from Techniques import PhysicalPhase, QiPhase, SoulPhase, Technique
 from Stats import BasicStatCalculator
@@ -25,6 +27,14 @@ class Vector():
 
     def __sub__(self, other : Vector) -> Vector:
         return Vector(self.x - other.x, self.y - other.y)
+    
+    def __add__(self, other: Vector) -> Vector:
+        return Vector(self.x + other.x, self.y + other.y)
+
+    def __mul__(self, scalar: float) -> Vector:
+        return Vector(self.x * scalar, self.y * scalar)
+
+    __rmul__ = __mul__
     
     def dot(self, other : Vector) -> float:
         return self.x * other.x + self.y * other.y
@@ -206,8 +216,10 @@ class CombatContext():
             for enemy in self.combat_positions[team].values():
                 if not enemy.entity.is_alive:
                     continue
-                if not closest_enemy or (participant.position.distance_from(enemy.position) < closest_enemy_distance):
+                distance_to_enemy = participant.position.distance_from(enemy.position)
+                if not closest_enemy or (distance_to_enemy < closest_enemy_distance):
                     closest_enemy = enemy
+                    closest_enemy_distance = distance_to_enemy
         return closest_enemy
     
     def initialize_combat_states(self, teams : dict[str, list[Entity]], field_size : int) -> None:
@@ -508,7 +520,7 @@ class CombatResolver():
         output("4. \"retreat\" : Attempts to retreat from the battlefield.")
     
     def handle_look(self, player : CombatState) -> None:
-        for enemy_id, enemy in self.combat_context.all_enemies_dict.values():
+        for enemy_id, enemy in self.combat_context.all_enemies_dict.items():
             if enemy.entity.is_alive:
                 self.game_engine.game_actions.output(f"{enemy_id} : Distance : {player.position.distance_from(enemy.position)}")
             else:
@@ -527,9 +539,15 @@ class CombatResolver():
             target = self.combat_context.all_enemies_dict[target]
             return target
 
-    def resolve_player_input(self, player_input : str) -> None:
+    def resolve_player_input(self, player_input_queue : Queue) -> None:
         #check player input.
         #if correct, pass to resolve action.
+        if player_input_queue.qsize() > 0:
+            player_action_cooldown = int(self.combat_context.player.power_level / self.combat_context.max_power_level)
+            if self.combat_context.player.last_action_tick + player_action_cooldown > self.total_ticks:
+                return 
+            else:
+                player_input = player_input_queue.get() #yep, players can queue up actions, but they will only be executed when it's their turn.
         player = self.combat_context.player
         output = self.game_engine.game_actions.output
         player_input = player_input.strip().lower()
@@ -543,6 +561,7 @@ class CombatResolver():
                 return
             else:
                 output("Your attempt to retreat from the battlefield was unsuccessful.", "warning")
+                self.combat_context.player.last_action_tick = self.total_ticks
                 return
         if first_arg == "help":
             self.output_help()
@@ -575,6 +594,7 @@ class CombatResolver():
                     return
             action_packet = ActionPacket(action = "attack", origin = player, target = target)
             self.resolve_action(action_packet)
+            self.combat_context.player.last_action_tick = self.total_ticks
             return
         elif first_arg == "move":
             if len(player_input) < 3 or len(player_input) > 3:
@@ -590,20 +610,32 @@ class CombatResolver():
             max_move_distance = player.get_stat("agility")
             distance = player.position.distance_from(target.position)
             if second_arg == "towards":
+                if distance == 0:
+                    return
                 direction = target.position - player.position
                 if distance < max_move_distance:
                     player.position.x, player.position.y = target.position.x, target.position.y
+                    self.combat_context.player.last_action_tick = self.total_ticks
                     return
-            else:
-                direction = player.position - target.position
+            elif second_arg in {"away", "opposite"}:
+                if distance == 0:
+                    direction = Vector(random.uniform(-1, 1), random.uniform(-1, 1)).normalized()
+                    distance = 1
+                else:
+                    direction = player.position - target.position
             unit_direction = Vector(direction.x / distance, direction.y / distance)
-            player.position.x, player.position.y = (unit_direction.x * max_move_distance), (unit_direction.y * max_move_distance)
+            
+            player.position.x += unit_direction.x * max_move_distance
+            player.position.y += unit_direction.y * max_move_distance
+            self.combat_context.player.last_action_tick = self.total_ticks
             return
-        
-        output(f"sorry but \"{first_arg}\" is not yet implemented.", "narrator")
+        elif first_arg == "technique":
+            output(f"sorry but \"{first_arg}\" is not yet implemented.", "narrator")
+        else:
+            output(f"\"{first_arg}\" is not a valid combat action. If you need help, write \"Help\" instead.", "info")
         return
         
-    def get_intent(self, participant : CombatState, target : CombatState) -> str:
+    def get_intent(self, participant : CombatState) -> str:
         #very simple right now.
         if participant.entity.hp < participant.target.hp:
             max_participant_hp = self.stats_calculator.get(participant.entity.stats, "hp")
@@ -724,9 +756,23 @@ class CombatResolver():
                     if "most_damaging_ranged_technique" in techniques:
                         return ActionPacket(action = "technique", origin = participant, target = target, technique = techniques["most_damaging_ranged_technique"], stamina = 0, qi = (min(participant.usable_qi, (participant.position.distance_from(target.position) * 1.2) * (techniques["most_damaging_ranged_technique"].qi.effect_config["range_points"] / 100))))
         if intent == "cautious":
-            pass
+            if techniques_available:
+                if bias == "soul" and participant.entity.cultivation.soul.current > 0:
+                    if "strongest_speed_buff" in techniques and not participant.modifier_pool.has_modifier("agility"):
+                        return ActionPacket(action = "technique", origin = participant, target = participant, technique = techniques["strongest_speed_buff"], stamina = 0, qi = 0, soul = min(soul_left, total_stats * (techniques["strongest_speed_buff"].soul.effect_config["duration"] / 100)))
+                if participant.usable_qi > 0:
+                    if "strongest_defense_technique" in techniques:
+                        return ActionPacket(action = "technique", origin = participant, target = participant, technique = techniques["strongest_defense_technique"], stamina = 0, qi = min(participant.usable_qi, 3 * target.get_stat("strength") * (techniques["strongest_defense_technique"].qi.effect_config["defense_points"] / 100)), soul = 0)
         if intent == "careful":
-            pass
+            if techniques_available:
+                if bias == "soul" and participant.entity.cultivation.soul.current > 0:
+                    if "strongest_strength_buff" in techniques and not participant.modifier_pool.has_modifier("strength"):
+                        return ActionPacket(action = "technique", origin = participant, target = participant, technique = techniques["strongest_strength_buff"], stamina = 0, qi = 0, soul = min(soul_left, total_stats * (techniques["strongest_strength_buff"].soul.effect_config["duration"] / 100)))
+                if participant.usable_qi > 0:
+                    if "most_damaging_melee_technique" in techniques:
+                        return ActionPacket(action = "technique", origin = participant, target = target, technique = techniques["most_damaging_melee_technique"], stamina = 0, qi = min(participant.usable_qi, target.entity.hp / (techniques["most_damaging_melee_technique"].qi.effect_config["damage_points"] / 100)), soul = 0)
+        
+        #Just in case of a problem, it will always return a normal attack packet.
         return ActionPacket(action = "attack", origin = participant, target = target)
     
     def move_according_to_intent(self, intent : str, participant : CombatState) -> None:
@@ -807,7 +853,7 @@ class CombatResolver():
                 can_act = True if (self.total_ticks - participant.last_action_tick) * max(0.1, power_factor) >= 1 else False
                 if can_act:
                     #assign intent.
-                    intent = self.get_intent(participant = participant, target = participant.target)
+                    intent = self.get_intent(participant = participant)
                     participant.last_action_tick = int(participant.last_action_tick + (1 / power_factor))
                     if participant.entity.cultivation.qi.current["Mortal Qi"] >= participant.qi_conversion_per_tick["Mortal Qi"]: #Only clamping this to Mortal Qi because the conversion rate is the same for all qi types, so if mortal qi is exhausted, it means all others are too. Guaranteed.
                         participant.usable_qi += participant.qi_conversion_per_tick["Mortal Qi"] 

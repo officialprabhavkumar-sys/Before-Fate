@@ -6,7 +6,7 @@ def throw_error(error : str) -> None:
     input()
     quit()
 
-def verify_initial():
+def perform_initial_verification():
     items = os.listdir()
     if not "settings.json" in items:
         save_path = "Saves"
@@ -27,7 +27,7 @@ def verify_initial():
         if not os.path.isdir(directory):
             throw_error(f"Directory : \"{directory}\" was expected to exist but was not found.")
     
-verify_initial()
+perform_initial_verification()
 
 from Engine import run
 try:
