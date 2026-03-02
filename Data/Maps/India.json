@@ -1,6 +1,6 @@
 {
     "name" : "India",
-    "description" : "",
+    "description" : "India. A country in South Asia. With the proud Himalayan mountains in the north, the vast Indian Ocean in the south, the Thar desert in the west and the fertile Gangetic plains in the east, India is a land of great diversity. It was a home to over 1.3 billion people, making it the second most populous country in the world before the war. India has a rich history and culture, with influences from various civilizations and religions. It is known for its vibrant festivals, delicious cuisine, and colorful traditions, that much has not changed. However, the war has left its mark on the country, with many cities and towns bearing the scars of conflict. Despite the challenges, the people of India remain resilient and hopeful for a better future.",
     "locations" : 
     {
         "New Delhi" :
@@ -142,10 +142,43 @@
         },
         "Jaipur" :
         {
-            "description" : "",
+            "description" : "Jaipur. A city in India.",
             "tags" : [],
             "sub_locations" :
             {
+                "Street" :
+                {
+                    "description" : "You are standing on a busy street in Jaipur. The sounds of honking cars and chattering people fill the air.",
+                    "tags" : ["large"],
+                    "inventory" : 
+                    {
+                        "tables" : {
+                            "static" : [],
+                            "dynamic" : []
+                        },
+                        "spawn" : 
+                        {
+                            "instanced" : [],
+                            "stacked" : []
+                        },
+                        "load" : 
+                        {
+                            "instanced" : [],
+                            "stacked" : []
+                        }
+                    },
+                    "entities" :
+                    {
+                        "spawn" : {"GeneralHuman" : {"general_person_1" : 3}},
+                        "load" : []
+                    },
+                    "location_events" : [],
+                    "exits" : 
+                    {
+                        "FateCreations Jaipur Branch" : "India/Jaipur/FateCreations Jaipur Branch"
+                    }
+                },
+
                 "FateCreations Jaipur Branch" :
                 {
                     "description" : "You are in Fatecreations Jaipur Branch building.",
@@ -178,14 +211,14 @@
                     ],
                     "exits" : 
                     {
-                        "Jaipur Street" : "India/Jaipur/Street"
+                        "Street" : "India/Jaipur/Street"
                     }
                 },
 
-                "Street" :
+                "Room 88" :
                 {
-                    "description" : "You are standing on a busy street in Jaipur. The sounds of honking cars and chattering people fill the air.",
-                    "tags" : ["large"],
+                    "description" : "You are in Room 88, the interview room of FateCreations Jaipur Branch. The room is small but well-lit, with a large window overlooking the city. A desk and two chairs are arranged neatly in the center of the room. On the chair, you see a man in a suit, waiting for you. He seems to be the interviewer.",
+                    "tags" : ["small"],
                     "inventory" : 
                     {
                         "tables" : {
@@ -205,7 +238,7 @@
                     },
                     "entities" :
                     {
-                        "spawn" : {"GeneralHuman" : {"general_person_1" : 3}},
+                        "spawn" : {},
                         "load" : []
                     },
                     "location_events" : [],

@@ -1,0 +1,102 @@
+{
+    "__interviewer_situation_question_1__" : {
+        "text" : "Ask why they closed the door.",
+        "result" :
+        [
+            {
+                "type" : "output_with_pauses",
+                "args" : 
+                {
+                    "output" :
+                    [
+                        {"text" : "Oh, my apologies, You see, the contents of this interview are extremely sensitive and must be kept confidential under any and all circumstances.", "tag" : "npc"},
+                        {"text" : "I hope you understand.", "tag" : "npc"}
+                    ],
+                    "pause" : 25,
+                    "tick_based" : true
+                }
+            }
+        ]
+    },
+    "__interviewer_situation_question_2__" : {
+        "text" : "Stay silent and wait for the interviewer to continue.",
+        "result" :
+        [
+            {
+                "type" : "output_with_pauses",
+                "args" :
+                {
+                    "output" :
+                    [
+                        {"text" : "Now, let's get started, shall we?", "tag" : "npc"},
+                        {"text" : "First of all, I must say, I am extremely impressed wit your resume.", "tag" : "npc"},
+                        {"text" : "You eye your resume nervously and start wondering if there was some sort of mistake.", "tag" : "narrator"},
+                        {"text" : "The Interviewer noticies your discomfort and smiles mysteriously at you before continuing.", "tag" : "narrator"},
+                        {"text" : "I mean, 37 wins and only one loss, that's quite impressive, specially for an illegal underground fighting club.", "tag" : "npc"},
+                        {"text" : "We have done our research on you, ofcourse.", "tag" : "npc"},
+                        {"text" : "Infact, we have been watching you for quite some time now.", "tag" : "npc"}
+                    ]
+                }
+            },
+            {
+                "type" : "schedule_results_by_engine_tick",
+                "args" :
+                {
+                    "tick_offset" : 25,
+                    "results" :
+                    [
+                        {
+                            "type" : "interaction_goto",
+                            "args" :
+                            {
+                                "interaction_id" : "__interviewer_interaction_2__"
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "__interviewer_situation_question_3__" : {
+        "text" : "Ask how they know all that.",
+        "result" :
+        [
+            {
+                "type" : "output_with_pauses",
+                "args" :
+                {
+                    "output" :
+                    [
+                        {"text" : "Oh, we have our ways.", "tag" : "npc"},
+                        {"text" : "As I said-we have been watching you for quite some time now.", "tag" : "npc"},
+                        {"text" : "We know everything about you, from your childhood to your most recent activities.", "tag" : "npc"},
+                        {"text" : "We know about your time in the underground fighting club, we know about your wins and losses, we know about your skills and abilities.", "tag" : "npc"},
+                        {"text" : "We know everything there is to know about you.", "tag" : "npc"}
+                    ],
+                    "pause" : 25,
+                    "tick_based" : true
+                }
+            }
+        ]
+    },
+    "__interviewer_situation_question_4__" : {
+        "text" : "Ask what they want from you.",
+        "result" :
+        [
+            {
+                "type" : "output_with_pauses",
+                "args" :
+                {
+                    "output" :
+                    [
+                        {"text" : "Hey! This is about as far as the game has been made.", "tag" : "success"},
+                        {"text" : "Please let me know if you enjoyed it thus far!.", "tag" : "narrator"},
+                        {"text" : "It would really mean a lot to me if you gave me feedback!", "tag" : "narrator"}
+                    ],
+                    "pause" : 25,
+                    "tick_based" : true
+                }
+            }
+        ]
+    }
+}

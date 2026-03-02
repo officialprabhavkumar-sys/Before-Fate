@@ -12,7 +12,9 @@
                     [
                         {"text" : "Oh, my apologies!", "tag" : "npc"},
                         {"text" : "I'm Alex, a recruiter at FateCreations.", "tag" : "npc"}
-                    ]
+                    ],
+                    "pause" : 25,
+                    "tick_based" : true
                 }
             }
         ]

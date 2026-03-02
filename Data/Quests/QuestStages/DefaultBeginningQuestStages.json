@@ -190,24 +190,75 @@
         "on_entry" : [],
         "success_conditions" :
         [
-            "@player_location_is{|location| = |India/Jaipur/InterviewLocation|}"
+            "@player_location_is{|location| = |India/Jaipur/Room 88|}"
         ],
         "success_result" :
         [
+            {
+                "type" : "lock_sublocation",
+                "args" :
+                {
+                    "sublocation_path" : "India/Jaipur/FateCreations Jaipur Branch"
+                }
+            },
             {
                 "type" : "output_with_pauses",
                 "args" :
                 {
                     "output" :
                     [
-                        {"text" : "This is about as far as the game has been written.", "tag" : "success"},
-                        {"text" : "Please be sure to tell me about your experience playing this game thus far!", "tag" : "success"},
-                        {"text" : "I hope you enjoyed it!", "tag" : "success"}
+                        {"text" : "As you enter the room you see the arrangement, a table and two chairs, one occupied by a professional looking man in a suit.", "tag" : "narrator"},
+                        {"text" : "The man looks at you with a professional smile and gestures for you to sit down.", "tag" : "narrator"},
+                        {"text" : "Just as you are about to sit down, the door opens and two more people enter the room and before you can look back you hear the click of the door locking behind you.", "tag" : "narrator"},
+                        {"text" : "You look back and see two other well-dressed men with a more serious demeanor standing by the door. They don't move after entering, clearly content to remain there.", "tag" : "narrator"}
                     ],
                     "pause" : 25,
                     "tick_based" : true
                 }
+            },
+            {
+                "type" : "schedule_result_by_engine_tick",
+                "args" :
+                {
+                    "result" : 
+                    {
+                        "type" : "spawn_entities_at_sublocation",
+                        "args" : 
+                        {
+                            "entity_type" : "Guard",
+                            "entity_template_name" : "__story_guard_fc_1__",
+                            "amount" : 2,
+                            "sublocation" : "India/Jaipur/Room 88"
+                        }
+                    },
+                    "tick_offset" : 51
+                }
+            },
+            {
+                "type" : "schedule_result_by_engine_tick",
+                "args" :
+                {
+                    "type" : "set_quest_stage",
+                    "args" :
+                    {
+                        "quest_id" : "__default_beginning_interview_quest__",
+                        "stage_id" : "__default_beginning_quest_interviewer_talk__"
+                    }   
+                },
+                "tick_offset" : 101
             }
+        ]
+    },
+    "__default_beginning_quest_interviewer_talk__" :
+    {
+        "description" : "Talk with the interviewer.",
+        "on_entry" : [],
+        "success_conditions" : [
+            "@quest_flag_is_true{|quest_id| = |__default_beginning_interview_quest__|, |flag| = |talked_with_interviewer|}"
+        ],
+        "success_result" : 
+        [
+            
         ]
     }
 }

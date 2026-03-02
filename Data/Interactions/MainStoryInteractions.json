@@ -30,5 +30,21 @@
             "__recruiter_question_about_intent_followup__"
         ],
         "exitable" : true
+    },
+    "__interviewer_interaction_1__" :
+    {
+        "text" : "Welcome, I hope it wasn't too difficult getting here.",
+        "dialogues" : [
+            "__interviewer_situation_question_1__", "__interviewer_situation_question_2__"
+        ],
+        "exitable" : false
+    },
+    "__interviewer_interaction_2__" :
+    {
+        "text" : "",
+        "dialogues" : [
+            "__interviewer_situation_question_3__"
+        ],
+        "exitable" : false
     }
 }

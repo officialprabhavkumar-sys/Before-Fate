@@ -19,7 +19,7 @@ def perform_initial_verification():
             data_path = settings["data_path"]
             save_path = settings["save_path"]
     
-    for necessary_file in ["UIEngine.py", "Cultivation.py", "Engine.py", "Entities.py", "GeneralVerifier.py", "Inventory.py", "Items.py", "Loadout.py", "Map.py", "Money.py", "NameLoader.py", "Stats.py", "TableLoader.py", "Quests.py", "Conditionals.py", "WorldState.py", "CommandSchedulers.py"]:
+    for necessary_file in ["UIEngine.py", "Cultivation.py", "Engine.py", "Entities.py", "GeneralVerifier.py", "Inventory.py", "Items.py", "Loadout.py", "Map.py", "Money.py", "NameLoader.py", "Stats.py", "Skills.py", "TableLoader.py", "Techniques.py", "Trade.py", "Quests.py", "Conditionals.py", "WorldState.py", "WorldTime.py", "CommandSchedulers.py"]:
         if not necessary_file in items:
             throw_error(f"File : {necessary_file} was expected to exist but was not found.")
     
