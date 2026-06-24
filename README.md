@@ -75,7 +75,7 @@ The **data_path** directory is expected to have the following sub-directories:
   ii. **StaticTables** - json files that hold static tables, all the items in these tables are added without a roll. Intended to be used for traders and guards and anyone/anything whose's inventory should always contain some items.<br>
 11. **Techniques** - json files that hold all the techniques available to be used in combat by Human type entities.
 
-Now that you have a basic model of how things are structures let's look at how the json files are structures for each and everything.<br>
+Now that you have a basic model of how things are structured, let's look at how the json files are structured for each and everything.<br>
 
 ## Items:
 Let's start with items as they are the most basic object in the engine.
